@@ -1,0 +1,94 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# macOS
+# =========================
+.DS_Store
+
+# =========================
+# IDE / Editors
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# EBX / HFT Data
+# =========================
+
+# Raw CSV dataset — do NOT commit huge data files
+data/raw/
+data/*.csv
+*.csv
+
+# Processed data — Parquet files can be hundreds of MB
+data/processed/
+*.parquet
+
+# Validation/cache artifacts
+data/validated/
+
+# =========================
+# Generated Results
+# =========================
+results/
+figures/
+reports/
+
+# =========================
+# Secrets / Credentials
+# =========================
+.env
+.env.*
+*.pem
+*.key
+
+# =========================
+# OS / Logs / Temporary
+# =========================
+*.log
+*.tmp
+*.temp
+.DS_Store
+
+# =========================
+# Large model/checkpoint files
+# =========================
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.pt
+*.pth
+*.onnx
+
+# =========================
+# Local configuration
+# =========================
+config/local.yaml
+config/local.yml
