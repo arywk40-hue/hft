@@ -14,7 +14,7 @@ def digest(path: Path) -> str:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     freeze = root / "results/freeze/development_freeze.json"
     review = root / "reports/phase11_integrated_review.md"
     config = root / "config/config.yaml"

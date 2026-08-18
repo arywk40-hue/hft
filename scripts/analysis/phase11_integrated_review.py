@@ -9,13 +9,13 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.analytics.coverage import coverage_metadata  # noqa: E402
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     taxonomy = pd.read_csv(root / "results/features/feature_taxonomy.csv")
     best = pd.read_csv(root / "results/features/candidate_best_matches.csv")
     daily = pd.read_csv(root / "results/features/daily_best_candidates.csv")

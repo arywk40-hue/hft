@@ -20,12 +20,14 @@ The repository-level traceability audit is [reports/repository_audit.md](reports
 
 ## Governing documents and flow
 
-`quant.md` defines the challenge and deliverables. `architecture.md` defines
-the data flow and statistical safeguards. `implementation.md` records the
-phase gates and execution order. The implementation produces scoped artifacts:
+[`docs/quant.md`](docs/quant.md) defines the challenge and deliverables.
+[`docs/architecture.md`](docs/architecture.md) defines the data flow and
+statistical safeguards. [`docs/implementation.md`](docs/implementation.md)
+records the phase gates and execution order. The implementation produces
+scoped artifacts:
 
 ```text
-quant.md requirements
+docs/quant.md requirements
         ↓
 src/ebx/ + historical src.* implementations + scripts/
         ↓
@@ -38,11 +40,11 @@ reports/ (reviewable conclusions and traceability)
 
 | Requirement | Source modules / scripts | Results | Figures | Report section |
 |---|---|---|---|---|
-| Part 1 — Data Hygiene & Descriptive Statistics | `src/ebx/io/`, `src/ebx/validation/`, `src/ebx/common/`, `src/ebx/diagnostics/`; `scripts/phase2_process.py`, `scripts/phase4_part1.py` | `results/quality/`, `results/diagnostics/`, `results/missingness/` | `figures/part1/` | [Final report §3](reports/final_report.md#3-data-hygiene) |
-| Part 2 — Distribution & Tails | `src/ebx/distribution/`; `scripts/phase5_part2.py` | `results/distributions/` | `figures/part2/` | [Final report §4](reports/final_report.md#4-distribution-and-tails) |
-| Part 3 — Regime Classification | `src/ebx/regimes/`; `scripts/phase6_part3.py` | `results/regimes/` | No dedicated Part 3 figure currently exists | [Final report §5](reports/final_report.md#5-regime-classification) |
-| Part 4 — Feature Forensics | `src/ebx/features/`, `src/ebx/forensics/`; `scripts/phase7_part4a.py`, `scripts/phase8_part4b.py`, `scripts/phase9_part4c.py`, `scripts/phase10_part4d.py` | `results/features/`, `results/predictive/`, `results/redundancy/` | No dedicated Part 4 figure set currently exists | [Final report §§6–8](reports/final_report.md#6-feature-forensics) |
-| Holdout — Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`; `scripts/phase13_holdout_validation.py` | `results/holdout/` | Holdout figures not generated | [Holdout report](reports/holdout_validation.md), [Final report §9](reports/final_report.md#9-out-of-sample-validation) |
+| Part 1 — Data Hygiene & Descriptive Statistics | `src/ebx/io/`, `src/ebx/validation/`, `src/ebx/common/`, `src/ebx/diagnostics/`; `scripts/analysis/phase2_process.py`, `scripts/analysis/phase4_part1.py` | `results/quality/`, `results/diagnostics/`, `results/missingness/` | `figures/part1/` | [Final report §3](reports/final_report.md#3-data-hygiene) |
+| Part 2 — Distribution & Tails | `src/ebx/distribution/`; `scripts/analysis/phase5_part2.py` | `results/distributions/` | `figures/part2/` | [Final report §4](reports/final_report.md#4-distribution-and-tails) |
+| Part 3 — Regime Classification | `src/ebx/regimes/`; `scripts/analysis/phase6_part3.py` | `results/regimes/` | No dedicated Part 3 figure currently exists | [Final report §5](reports/final_report.md#5-regime-classification) |
+| Part 4 — Feature Forensics | `src/ebx/features/`, `src/ebx/forensics/`; `scripts/analysis/phase7_part4a.py`, `scripts/analysis/phase8_part4b.py`, `scripts/analysis/phase9_part4c.py`, `scripts/analysis/phase10_part4d.py` | `results/features/`, `results/predictive/`, `results/redundancy/` | No dedicated Part 4 figure set currently exists | [Final report §§6–8](reports/final_report.md#6-feature-forensics) |
+| Holdout — Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`; `scripts/analysis/phase13_holdout_validation.py` | `results/holdout/` | Holdout figures not generated | [Holdout report](reports/holdout_validation.md), [Final report §9](reports/final_report.md#9-out-of-sample-validation) |
 
 The generated directories are intentionally not committed as bulk data. Their
 contents, scope, and review status are catalogued in [results/README.md](results/README.md)
@@ -92,11 +94,16 @@ not read by this pipeline.
 
 ```text
 hft/
-├── README.md, quant.md, architecture.md, implementation.md
+├── README.md
+├── docs/                   # quant.md, architecture.md, implementation.md
 ├── config/                 # configuration source of truth
 ├── src/ebx/                # production-facing package
 ├── src/{analytics,cleaning,common,ingestion}/  # audited compatibility layer
-├── scripts/                # phase runners and safe verifier
+├── scripts/
+│   ├── analysis/           # phase runners (Parts 1–4, holdout)
+│   ├── ml/                 # ML phase runners (Phase 0–3)
+│   ├── plot_part4.py       # Part 4 visualization suite
+│   └── run_pipeline.py     # safe production verifier
 ├── tests/                  # phase, unit, and integration tests
 ├── notebooks/              # reserved for presentation notebooks; none required
 ├── data/                   # external raw and generated local data

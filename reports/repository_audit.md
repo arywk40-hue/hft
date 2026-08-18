@@ -8,9 +8,9 @@ or statistical method was changed. No new data was accessed or processed.
 
 The governing sources are:
 
-1. `quant.md` — challenge requirements and deliverables.
-2. `architecture.md` — data flow, statistical methodology, and leakage rules.
-3. `implementation.md` — phase order, acceptance gates, and execution history.
+1. `docs/quant.md` — challenge requirements and deliverables.
+2. `docs/architecture.md` — data flow, statistical methodology, and leakage rules.
+3. `docs/implementation.md` — phase order, acceptance gates, and execution history.
 4. `README.md` — reviewer-facing navigation and operating instructions.
 
 ## Final directory tree
@@ -22,9 +22,10 @@ artifact directories.
 ```text
 hft/
 ├── README.md
-├── quant.md
-├── architecture.md
-├── implementation.md
+├── docs/
+│   ├── quant.md
+│   ├── architecture.md
+│   └── implementation.md
 ├── pyproject.toml
 ├── .gitignore
 ├── config/
@@ -50,7 +51,11 @@ hft/
 │   ├── cleaning/                    # audited compatibility implementation
 │   ├── analytics/                   # audited compatibility implementation
 │   └── common/                      # audited compatibility implementation
-├── scripts/                         # phase runners and verifier
+├── scripts/
+│   ├── analysis/                    # phase runners (Parts 1–4, holdout)
+│   ├── ml/                          # ML phase runners (Phase 0–3)
+│   ├── plot_part4.py                # Part 4 visualization suite
+│   └── run_pipeline.py              # safe production verifier
 ├── tests/                           # phase, unit, integration tests
 ├── notebooks/                       # presentation-only extension point
 ├── results/                         # local generated results; see README
@@ -69,16 +74,16 @@ hft/
 
 | `quant.md` requirement | Implementation | Results / figures | Report location | Status |
 |---|---|---|---|---|
-| Part 1: ingestion and sanity checks | `src/ebx/io/`, `src/ebx/validation/`, `src/ebx/common/`, `scripts/phase2_process.py` | `results/quality/`, `results/diagnostics/`, `results/missingness/`, `figures/part1/` | `reports/final_report.md` §3 | Implemented for 70 available development days |
-| Part 1: descriptive statistics, ACF, seasonality | `src/ebx/diagnostics/`, `src/ebx/common/returns.py`, `scripts/phase4_part1.py` | `results/quality/descriptive_stats.csv`, `results/diagnostics/`, `figures/part1/` | §3 | Implemented; volume semantics remain unavailable |
-| Part 2: normality testing | `src/ebx/distribution/`, `scripts/phase5_part2.py` | `results/distributions/normality_tests.csv`, `figures/part2/` | §4 | Implemented |
-| Part 2: sigma events, tails, extreme-event catalogue | `src/ebx/distribution/`, `scripts/phase5_part2.py` | `results/distributions/sigma_events.csv`, `tail_estimates.csv`, `extreme_events.csv` | §4 | Implemented |
-| Part 3: per-day regimes and independent tests | `src/ebx/regimes/`, `scripts/phase6_part3.py` | `results/regimes/regime_table.csv`, summaries, transitions, durations | §5 | 85-row scoped table exists; 15 rows explicitly mark missing source |
-| Part 4A: taxonomy and window hypotheses | `src/ebx/features/`, `scripts/phase7_part4a.py` | `results/features/feature_taxonomy.csv`, `results/missingness/` | §6 | Implemented |
-| Part 4B: candidate scoring and reverse engineering | `src/ebx/forensics/candidates.py`, `scripts/phase8_part4b.py` | `results/features/candidate_scores.csv`, `candidate_best_matches.csv` | §6 | Implemented; identities remain hypotheses |
-| Part 4C: forward-return predictive relevance and FDR | `src/ebx/forensics/predictive.py`, `scripts/phase9_part4c.py` | `results/predictive/`, `figures/part4/` | §7 | Implemented |
-| Part 4D: redundancy and PCA | `src/ebx/forensics/redundancy.py`, `scripts/phase10_part4d.py` | `results/redundancy/`, `figures/part4/` | §8 | Implemented |
-| Holdout validation on Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`, `scripts/phase13_holdout_validation.py` | `results/holdout/` | `reports/holdout_validation.md`, final §9 | Complete and separate from development |
+| Part 1: ingestion and sanity checks | `src/ebx/io/`, `src/ebx/validation/`, `src/ebx/common/`, `scripts/analysis/phase2_process.py` | `results/quality/`, `results/diagnostics/`, `results/missingness/`, `figures/part1/` | `reports/final_report.md` §3 | Implemented for 70 available development days |
+| Part 1: descriptive statistics, ACF, seasonality | `src/ebx/diagnostics/`, `src/ebx/common/returns.py`, `scripts/analysis/phase4_part1.py` | `results/quality/descriptive_stats.csv`, `results/diagnostics/`, `figures/part1/` | §3 | Implemented; volume semantics remain unavailable |
+| Part 2: normality testing | `src/ebx/distribution/`, `scripts/analysis/phase5_part2.py` | `results/distributions/normality_tests.csv`, `figures/part2/` | §4 | Implemented |
+| Part 2: sigma events, tails, extreme-event catalogue | `src/ebx/distribution/`, `scripts/analysis/phase5_part2.py` | `results/distributions/sigma_events.csv`, `tail_estimates.csv`, `extreme_events.csv` | §4 | Implemented |
+| Part 3: per-day regimes and independent tests | `src/ebx/regimes/`, `scripts/analysis/phase6_part3.py` | `results/regimes/regime_table.csv`, summaries, transitions, durations | §5 | 85-row scoped table exists; 15 rows explicitly mark missing source |
+| Part 4A: taxonomy and window hypotheses | `src/ebx/features/`, `scripts/analysis/phase7_part4a.py` | `results/features/feature_taxonomy.csv`, `results/missingness/` | §6 | Implemented |
+| Part 4B: candidate scoring and reverse engineering | `src/ebx/forensics/candidates.py`, `scripts/analysis/phase8_part4b.py` | `results/features/candidate_scores.csv`, `candidate_best_matches.csv` | §6 | Implemented; identities remain hypotheses |
+| Part 4C: forward-return predictive relevance and FDR | `src/ebx/forensics/predictive.py`, `scripts/analysis/phase9_part4c.py` | `results/predictive/`, `figures/part4/` | §7 | Implemented |
+| Part 4D: redundancy and PCA | `src/ebx/forensics/redundancy.py`, `scripts/analysis/phase10_part4d.py` | `results/redundancy/`, `figures/part4/` | §8 | Implemented |
+| Holdout validation on Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`, `scripts/analysis/phase13_holdout_validation.py` | `results/holdout/` | `reports/holdout_validation.md`, final §9 | Complete and separate from development |
 | Written report | phase reports and `reports/final_report.md` | — | `reports/final_report.md` | Present as Markdown; rendered page count/PDF not supplied |
 | Part 5 trade log and backtest | Not implemented by instruction | — | Explicitly excluded | Intentionally not included |
 
@@ -86,10 +91,21 @@ hft/
 
 ### Files renamed or moved
 
-None. No rename or move was safe and necessary. The production package under
-`src/ebx/` delegates to historical `src.*` modules; moving those modules would
-break their imports and weaken provenance. The compatibility layer is now
-documented in `scripts/README.md`, `src/` package layout, and the main README.
+The following structural reorganization was performed:
+
+- `quant.md`, `architecture.md`, `implementation.md` moved to `docs/`.
+- Analysis phase scripts (`phase0_audit.py` through `phase13_holdout_validation.py`)
+  moved to `scripts/analysis/`.
+- ML phase scripts (`phase_ml0.py` through `phase_ml3_temporal_robustness.py`)
+  moved to `scripts/ml/`.
+- `sys.path` resolution updated in all moved scripts.
+- Test imports updated to match new script locations.
+- All cross-references in README and documentation updated.
+
+The production package under `src/ebx/` delegates to historical `src.*` modules;
+those modules were not moved because doing so would break imports and weaken
+provenance. The compatibility layer is documented in `scripts/README.md`,
+`src/` package layout, and the main README.
 
 ### Obsolete files removed
 

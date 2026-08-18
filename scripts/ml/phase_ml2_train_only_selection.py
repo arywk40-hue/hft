@@ -9,7 +9,7 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.ebx.ml.baseline import RidgeBaseline, validation_metrics  # noqa: E402
 from src.ebx.ml.cache import sha256_file, write_json, write_partition  # noqa: E402
@@ -22,7 +22,7 @@ from src.ebx.ml.train_only_selection import (  # noqa: E402
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     scope = audited_scope(root / "results/freeze/development_freeze.json")
     ml_root = root / "results/ml"
     output = ml_root / "train_only_selection"

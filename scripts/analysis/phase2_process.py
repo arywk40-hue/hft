@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.cleaning.missingness import aggregate_cross_day_warmup, build_validity_mask, classify_structural_missingness
 from src.ingestion.discovery import discover_days
@@ -252,7 +252,7 @@ def process(repo_root: Path, config_path: Path | None = None) -> dict[str, Any]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--config", type=Path, default=None)
     args = parser.parse_args()
     summary = process(args.repo_root.resolve(), args.config.resolve() if args.config else None)

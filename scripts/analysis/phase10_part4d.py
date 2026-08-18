@@ -11,7 +11,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from sklearn.decomposition import IncrementalPCA, PCA
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.analytics.coverage import AVAILABLE_DEVELOPMENT_DAYS, available_days_from_manifest, coverage_metadata  # noqa: E402
 from src.analytics.redundancy import day_zscore, deterministic_rows  # noqa: E402
@@ -21,7 +21,7 @@ ROW_CAP = 512
 
 
 def main() -> None:
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[2]
     available = available_days_from_manifest(repo_root)
     if available != AVAILABLE_DEVELOPMENT_DAYS:
         raise RuntimeError("available development universe changed")

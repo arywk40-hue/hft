@@ -10,7 +10,7 @@ import sys
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.common.features import parse_feature  # noqa: E402
 from src.ebx.ml.baseline import RidgeBaseline, validation_metrics  # noqa: E402
@@ -171,7 +171,7 @@ def _run_window(
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     scope = audited_scope(root / "results/freeze/development_freeze.json")
     validate_temporal_windows(TEMPORAL_WINDOWS, scope)
     output = root / "results/ml/temporal_robustness"

@@ -2,8 +2,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.phase0_audit import discover_days, parse_day_filename, scope_for_day
-from scripts.phase1_reconnaissance import (
+from scripts.analysis.phase0_audit import discover_days, parse_day_filename, scope_for_day
+from scripts.analysis.phase1_reconnaissance import (
     OTHER_LADDER,
     PB_LADDER,
     load_config_lists,

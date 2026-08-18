@@ -14,7 +14,7 @@ def sha256(path: Path) -> str:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     files = [
         root / "config/config.yaml",
         root / "results/regimes/phase6_scope.json",

@@ -9,7 +9,7 @@ import sys
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.ebx.ml.baseline import RidgeBaseline, validate_baseline_scope, validation_metrics  # noqa: E402
 from src.ebx.ml.cache import sha256_file, write_json, write_partition  # noqa: E402
@@ -18,7 +18,7 @@ from src.ebx.ml.splits import write_split_manifest  # noqa: E402
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     scope = audited_scope(root / "results/freeze/development_freeze.json")
     ml_root = root / "results/ml"
     baseline_root = ml_root / "baseline"

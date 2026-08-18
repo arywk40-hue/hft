@@ -204,7 +204,7 @@ def write_outputs(repo_root: Path, data_dir: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--data-dir", type=Path, default=None)
     args = parser.parse_args()
     repo_root = args.repo_root.resolve()

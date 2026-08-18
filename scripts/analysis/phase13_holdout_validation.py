@@ -19,7 +19,7 @@ from scipy.stats import anderson, jarque_bera, norm, rankdata, ttest_1samp
 from sklearn.decomposition import IncrementalPCA, PCA
 from statsmodels.tsa.stattools import adfuller
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.analytics.candidates import candidate_series  # noqa: E402
 from src.analytics.predictive import forward_indices  # noqa: E402
@@ -161,7 +161,7 @@ def pca_row(sample: np.ndarray, day: int | str) -> dict:
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     output = root / "results/holdout"
     output.mkdir(parents=True, exist_ok=True)
     freeze = json.loads((root / "results/freeze/development_freeze.json").read_text())

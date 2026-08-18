@@ -11,7 +11,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 from scipy.stats import rankdata
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.analytics.candidates import (  # noqa: E402
     PRICE_CANDIDATES,
@@ -58,7 +58,7 @@ def _tier(row: pd.Series) -> str:
 
 
 def main() -> None:
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[2]
     available = available_days_from_manifest(repo_root)
     if available != AVAILABLE_DEVELOPMENT_DAYS:
         raise RuntimeError("available development universe changed")

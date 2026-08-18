@@ -8,7 +8,7 @@ import resource
 import sys
 import time
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.ebx.ml.cache import write_json  # noqa: E402
 from src.ebx.ml.dataset_builder import build_model_dataset, build_target_profiles  # noqa: E402
@@ -19,7 +19,7 @@ from src.ebx.ml.validation import leakage_report, validate_partition, validate_s
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     scope = audited_scope(root / "results/freeze/development_freeze.json")
     output = root / "results/ml"
     phase_start = time.perf_counter()

@@ -4,12 +4,12 @@ from pathlib import Path
 import sys
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from src.analytics.candidates import VOLUME_CANDIDATES
 
 
 def main() -> None:
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     path = root / "results" / "features" / "candidate_scores.csv"
     existing = pd.read_csv(path)
     taxonomy = pd.read_csv(root / "results" / "features" / "feature_taxonomy.csv")

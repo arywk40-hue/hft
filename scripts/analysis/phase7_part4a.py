@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import pyarrow.parquet as pq
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from src.analytics.coverage import AVAILABLE_DEVELOPMENT_DAYS, available_days_from_manifest, coverage_metadata  # noqa: E402
 from src.analytics.taxonomy import assemble_taxonomy  # noqa: E402
@@ -59,7 +59,7 @@ def _value_statistics(repo_root: Path, features: list[str]) -> pd.DataFrame:
 
 
 def main() -> None:
-    repo_root = Path(__file__).resolve().parents[1]
+    repo_root = Path(__file__).resolve().parents[2]
     available = available_days_from_manifest(repo_root)
     if available != AVAILABLE_DEVELOPMENT_DAYS:
         raise RuntimeError("available development universe changed")
