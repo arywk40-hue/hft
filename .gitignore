@@ -56,8 +56,15 @@ data/validated/
 # =========================
 # Generated Results
 # =========================
-results/
-figures/
+# Generated analytical tables are kept locally and are indexed by
+# results/README.md. The directory-level README remains reviewable.
+results/*
+!results/README.md
+
+# Generated figures are kept locally and are indexed by
+# figures/README.md. The directory-level README remains reviewable.
+figures/*
+!figures/README.md
 # Research reports are intentionally reviewable artifacts.
 reports/*.html
 reports/*.pdf
