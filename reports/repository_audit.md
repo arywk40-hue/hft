@@ -76,8 +76,8 @@ hft/
 | Part 3: per-day regimes and independent tests | `src/ebx/regimes/`, `scripts/phase6_part3.py` | `results/regimes/regime_table.csv`, summaries, transitions, durations | §5 | 85-row scoped table exists; 15 rows explicitly mark missing source |
 | Part 4A: taxonomy and window hypotheses | `src/ebx/features/`, `scripts/phase7_part4a.py` | `results/features/feature_taxonomy.csv`, `results/missingness/` | §6 | Implemented |
 | Part 4B: candidate scoring and reverse engineering | `src/ebx/forensics/candidates.py`, `scripts/phase8_part4b.py` | `results/features/candidate_scores.csv`, `candidate_best_matches.csv` | §6 | Implemented; identities remain hypotheses |
-| Part 4C: forward-return predictive relevance and FDR | `src/ebx/forensics/predictive.py`, `scripts/phase9_part4c.py` | `results/predictive/` | §7 | Implemented |
-| Part 4D: redundancy and PCA | `src/ebx/forensics/redundancy.py`, `scripts/phase10_part4d.py` | `results/redundancy/` | §8 | Implemented |
+| Part 4C: forward-return predictive relevance and FDR | `src/ebx/forensics/predictive.py`, `scripts/phase9_part4c.py` | `results/predictive/`, `figures/part4/` | §7 | Implemented |
+| Part 4D: redundancy and PCA | `src/ebx/forensics/redundancy.py`, `scripts/phase10_part4d.py` | `results/redundancy/`, `figures/part4/` | §8 | Implemented |
 | Holdout validation on Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`, `scripts/phase13_holdout_validation.py` | `results/holdout/` | `reports/holdout_validation.md`, final §9 | Complete and separate from development |
 | Written report | phase reports and `reports/final_report.md` | — | `reports/final_report.md` | Present as Markdown; rendered page count/PDF not supplied |
 | Part 5 trade log and backtest | Not implemented by instruction | — | Explicitly excluded | Intentionally not included |
@@ -151,15 +151,11 @@ Observed results:
 1. Days 65–79 remain unavailable. Therefore no claim based on a complete
    85-day development dataset is valid; the 85-row regime table explicitly
    marks those 15 rows as `missing_source`.
-2. `quant.md` requests a supporting chart per feature or family for Part 4.
-   The current repository has written feature evidence and result tables but no
-   dedicated Part 4 figure set. This was not fabricated or generated during
-   organization.
-3. No dedicated Part 3 or holdout figure set exists. The corresponding tables
+2. No dedicated Part 3 or holdout figure set exists. The corresponding tables
    and written conclusions are present.
-4. `implementation.md` requests `reports/report.md`; the canonical report is
+3. `implementation.md` requests `reports/report.md`; the canonical report is
    `reports/final_report.md`, with `reports/report.md` retained as a pointer.
-5. The report is Markdown and its rendered page count has not been formally
+4. The report is Markdown and its rendered page count has not been formally
    checked; no PDF is claimed.
-6. Part 5, `trade_log.csv`, ML modeling, and bonus work are intentionally
+5. Part 5, `trade_log.csv`, ML modeling, and bonus work are intentionally
    excluded from this repository state.
