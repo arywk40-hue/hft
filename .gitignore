@@ -58,7 +58,14 @@ data/validated/
 # =========================
 results/
 figures/
-reports/
+# Research reports are intentionally reviewable artifacts.
+reports/*.html
+reports/*.pdf
+
+# Packaging/build output
+build/
+dist/
+*.egg-info/
 
 # =========================
 # Secrets / Credentials

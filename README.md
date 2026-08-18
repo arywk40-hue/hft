@@ -1,31 +1,68 @@
-# EBX Quant Analysis
+# EBX Quantitative Analysis
 
-This repository follows the phase-gated implementation plan in
-[`implementation.md`](implementation.md) and the architecture in
-[`architecture.md`](architecture.md).
+This repository contains the completed Parts 1–4 statistical analysis of the
+EBX high-frequency dataset, untouched holdout validation, and reproducible
+research artifacts.
 
-Current phase: **PHASE 0 — Repository Audit and Environment Setup**.
+## Verified scope
 
-The raw dataset is currently located directly under `data/` (not
-`data/raw/`) and is treated as read-only. Development work is restricted to
-Days 1–85; the available development files and missing days are recorded in
-`results/phase0/`.
+- Development specification: 85 days
+- Available development data: 70 days — Days 1–64 and 80–85
+- Missing development days: Days 65–79; never fabricated
+- Holdout: Days 86–108, 23/23 processed after the development freeze
+- Days 109–123: out of scope
+- ML model training, Part 5, and backtesting: not performed
 
-Run the Phase 0 audit with:
+The final generalization verdict is **MOSTLY ROBUST**, with mixed masked-feature
+identity evidence and unstable exact tail magnitudes.
 
-```text
-python3 scripts/phase0_audit.py
+## Install
+
+From the repository root:
+
+```bash
+python -m pip install -e ".[dev]"
 ```
 
-The audit performs metadata-only discovery of day files; it does not parse or
-modify raw CSV contents.
+The raw dataset is external and must remain outside version control. The
+checked-in configuration expects day files at `data/dayN.csv`.
 
-Phase 2 can be run with:
+## Production CLI
 
-```text
-python3 scripts/phase2_process.py
+The default CLI commands verify or inventory artifacts; they do not silently
+rerun frozen analysis or overwrite results:
+
+```bash
+python -m ebx.cli inventory
+python -m ebx.cli validate
+python -m ebx.cli analyze
+python -m ebx.cli holdout
+pytest
 ```
 
-It processes only configured development days, records missing expected days,
-preserves structural missingness, and writes per-day Parquet plus validity
-masks. It does not process the holdout range.
+Historical phase scripts remain under `scripts/` for provenance and exact
+analysis reproduction. They are not destructive and should be run only with
+the documented scope and freeze safeguards.
+
+## Key artifacts
+
+- [Final research report](reports/final_report.md)
+- [Reproducibility guide](reports/reproducibility.md)
+- [Artifact index](reports/artifact_index.md)
+- [Development freeze](results/freeze/development_freeze.json)
+- [Holdout validation report](reports/holdout_validation.md)
+- [Holdout freeze manifest](results/holdout/freeze_manifest.json)
+
+## Architecture and implementation
+
+The governing documents are [architecture.md](architecture.md),
+[implementation.md](implementation.md), and [quant.md](quant.md). The
+production-facing package is under `src/ebx/`; the original `src.*` modules
+and phase scripts are retained as compatibility and provenance layers.
+
+## Data safety
+
+Raw CSVs are read-only and ignored by Git. Processed Parquet, generated result
+tables, figures, and local validation caches are also ignored or treated as
+external generated artifacts. No analytical phase after holdout validation is
+authorized by this repository state.
