@@ -155,8 +155,11 @@ Day 84 is retained in the primary W3 result. Removing it is a post-hoc
 sensitivity diagnostic only: W3 Pearson IC falls from 0.070712 to 0.011037,
 and Day 84 accounts for approximately 51.5% of pooled W3 IC while representing
 16.7% of observations. The forensic report attributes this influence to
-outlier-driven leverage and regime alignment; no feature, target, threshold, or
-model was changed.
+outlier-driven leverage on extreme target returns. Under the frozen Part 3
+classification rule, Day 84 is classified as random-walk / inconclusive with
+low confidence (conflicting persistent VR/Hurst/ACF vs. mean-reverting ADF
+evidence); its regime classification does not independently validate the ML
+result. No feature, target, threshold, or model was changed.
 
 ### 9.7 Part 5 baseline strategy
 

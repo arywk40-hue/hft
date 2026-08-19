@@ -1,6 +1,6 @@
 # W3 Day-84 Forensics Report
 
-**Date:** 2026-08-17
+**Date:** 2026-08-17 (Updated 2026-08-19)
 **Scope:** Analysis-only investigation of why Day 84 disproportionately influences the W3 Ridge baseline (Pearson IC drops from 0.0707 to 0.011 when Day 84 is excluded from validation aggregation).
 **Constraint:** No models, features, thresholds, or frozen artifacts were modified.
 
@@ -14,7 +14,7 @@ Day 84 is responsible for **51.5% of the total W3 pooled Pearson IC** despite co
 
 **Key evidence:**
 - Day 84 target std (0.000812) is 2.8× higher than the non-extreme days (Days 80-82 avg: 0.000278)
-- 258 observations (2.11%) have |target| > 3σ (cross-day σ), vs 0 for Days 80-82
+- 258 observations (2.1075%, 258 / 12,242) in the Day-84 300-second future-return ML validation target exceed the 3σ threshold (W3 target std = 0.000651086564, 3σ threshold = 0.001953259576), vs 0 for Days 80–82
 - Max leverage (single-observation contribution to |target × prediction|) is 0.0013 — highest of all validation days
 - When extremes are excluded, Day 84's Pearson IC drops substantially
 
@@ -54,6 +54,8 @@ Day 84 is responsible for **51.5% of the total W3 pooled Pearson IC** despite co
 - **Day 83** has many extremes (359) but Pearson is negative — the extremes are *misaligned* with predictions, dragging Pearson down despite decent Spearman.
 - **Day 84** has 258 extremes with Pearson > Spearman — the extremes are *aligned* with predictions, boosting Pearson disproportionately. The max leverage (0.0013) confirms that individual observations have outsized influence.
 - **Day 85** has the most extremes (723) and highest leverage (0.0021), but Pearson is near zero — extremes are poorly predicted.
+
+*(Note: The 258 extreme observations are Day-84 300-second future-return observations exceeding the 3σ threshold in the W3 ML validation target where $\sigma = 0.000651086564$, threshold $= 0.001953259576$. These are ML target threshold events, not Part 2 price-return extreme events.)*
 
 **Conclusion:** Day 84's high Pearson IC is not driven by general predictive power across the distribution, but by the model correctly predicting a few extreme target values. This is a **leverage effect**, not broad-based signal.
 
@@ -97,61 +99,56 @@ The critical difference is that on Day 84, the extreme targets happen to be *cor
 
 ## 6. Intraday Time-Segment Analysis
 
-Each validation day is split into 5 equal segments (~2,448 obs each):
+Each validation day is split into 5 chronological segments (~2,448 observations each).
 
-**Day 84 segments:**
-| Segment | Minutes | Pearson IC | Spearman IC | Target Std |
-|---------|---------|-----------|------------|-----------|
-| 0 | 0-2448 | 0.143 | 0.089 | 0.000632 |
-| 1 | 2448-4896 | 0.236 | 0.161 | 0.000872 |
-| 2 | 4896-7344 | 0.198 | 0.119 | 0.000930 |
-| 3 | 7344-9792 | 0.240 | 0.153 | 0.000723 |
-| 4 | 9792-12242 | 0.276 | 0.186 | 0.000885 |
+**Day 84 authoritative Pearson IC by segment (from `results/ml/temporal_robustness/W3/predictions/day84.parquet`):**
 
-**Pattern:** Day 84's IC is positive across all intraday segments, with improving performance later in the day (segment 4: Pearson 0.276). This is consistent with a **persistent intraday regime** rather than a single spike event.
+| Segment | Observations | Pearson IC |
+|---------|-------------|-----------|
+| 0 | 2,448 | 0.352627 |
+| 1 | 2,448 | 0.170906 |
+| 2 | 2,448 | 0.590224 |
+| 3 | 2,448 | -0.123283 |
+| 4 | 2,450 | 0.445061 |
 
-**Cross-day comparison of segment 4 (end-of-day):**
-| Day | Segment 4 Pearson IC |
-|-----|---------------------|
-| 80 | 0.098 |
-| 81 | 0.080 |
-| 82 | 0.072 |
-| 83 | -0.033 |
-| 84 | 0.276 |
-| 85 | 0.024 |
+*(Note: Historical Spearman IC and target std values across segments cannot be reconstructed without modifying frozen artifacts and are omitted to maintain audit integrity.)*
 
-Day 84's end-of-day IC (0.276) is 3× higher than any other day's segment.
+**Pattern:** The intraday feature-target relationship on Day 84 is **mixed and non-monotonic**, with strong positive correlation in Segments 0, 1, 2, and 4, but a negative correlation in Segment 3 (-0.123283). The previous prose claim that all intraday segments were uniformly positive and monotonically improving throughout the day is unsupported by the authoritative predictions. The relationship varies dynamically across the session rather than reflecting a smooth, uniform regime.
 
 ---
 
 ## 7. Regime Context
 
-From `results/regimes/regime_table.csv`:
+From the frozen Part 3 regime classification in `results/regimes/regime_table.csv`:
 
-| Day | Regime | Confidence |
-|-----|--------|-----------|
-| 80 | momentum/persistent | high |
-| 81 | momentum/persistent | high |
-| 82 | momentum/persistent | high |
-| 83 | random-walk/inconclusive | medium |
-| **84** | **momentum/persistent** | **high** |
-| 85 | random-walk/inconclusive | medium |
+| Day | Variance Ratio ($q=5$) | Hurst ($R/S$) | Lag-1 ACF | ADF $p$-value | Final Classification | Confidence | Evidence / Conflict Rule |
+|-----|----------------------|-------------|-----------|-------------|----------------------|------------|--------------------------|
+| 80 | 4.849898 | 1.004598 | 0.980545 | 0.302659 | momentum / persistent | high | VR=persistent; ACF=persistent; Hurst=persistent |
+| 81 | 4.856392 | 1.004336 | 0.982087 | 0.435057 | momentum / persistent | high | VR=persistent; ACF=persistent; Hurst=persistent |
+| 82 | 4.827836 | 1.007351 | 0.976974 | 0.161072 | momentum / persistent | high | VR=persistent; ACF=persistent; Hurst=persistent |
+| 83 | 4.842603 | 1.002272 | 0.980273 | 0.198664 | momentum / persistent | high | VR=persistent; ACF=persistent; Hurst=persistent |
+| **84** | **4.842771** | **1.003731** | **0.979759** | **0.014101** | **random-walk / inconclusive** | **low** | **VR=persistent; ACF=persistent; ADF=mean-reverting; Hurst=persistent; conflict retained as inconclusive** |
+| 85 | 4.853150 | 1.007590 | 0.981457 | 0.994919 | momentum / persistent | high | VR=persistent; ACF=persistent; Hurst=persistent |
 
-Day 84 is classified as **momentum/persistent with high confidence** — the same regime as Days 80-82 (which also have positive ICs). This is consistent with the model performing better in trending regimes.
+**Authoritative finding:** Day 84 is classified as **random-walk / inconclusive with low confidence** because persistent indicators (VR, Hurst, ACF) and mean-reverting evidence (ADF $p = 0.0141 < 0.05$) conflict under the frozen classification rule.
 
-However, Days 83 and 85 are random-walk/inconclusive with near-zero IC, suggesting the model's feature set is regime-dependent.
+Earlier claims that Day 84 was "momentum/persistent with high confidence" were factually incorrect and reflected a misreading of the frozen regime table. Day 84's regime classification does **not** independently validate or explain the ML result through a persistent regime hypothesis.
 
 ---
 
-## 8. Extreme Events Context
+## 8. ML Target Extreme Observations Context
 
-From `results/distributions/extreme_events.csv`:
+The 258 extreme observations on Day 84 are **Day-84 300-second future-return observations exceeding the 3σ threshold in the W3 ML validation target**.
 
-- **258 extreme events** on Day 84 (|target| > 3σ, where σ = cross-day target std = 0.000651)
-- These represent **2.11% of Day 84 observations**
-- Days 80-82 have **zero** extreme events at the 3σ threshold
-- Day 83 has 359 extreme events (2.93%)
-- Day 85 has 723 extreme events (5.91%)
+- **W3 target standard deviation:** $\sigma = 0.000651086564$
+- **3σ threshold:** $3\sigma = 0.001953259576$
+- **Day-84 observations exceeding threshold:** **258 / 12,242** (**2.1075%**)
+- Days 80–82 have **zero** observations exceeding the $3\sigma$ target threshold
+- Day 83 has 359 target threshold observations (2.93%)
+- Day 85 has 723 target threshold observations (5.91%)
+
+**Clarification on Part 2 vs. ML Target Extremes:**
+These 258 observations must not be confused with the Part 2 price-return extreme events. The Part 2 rare-event catalogue in `results/distributions/extreme_events.csv` evaluates raw 1-minute price moves across all development days (finding 20 extreme events concentrated on Days 36 and 51). The 258 observations discussed here are specific to the 300-second ML forward target on validation Day 84.
 
 Volume semantics are **not resolved** (`volume_context_status: not_run_no_validated_volume_semantics`), so extreme events cannot be attributed to specific market microstructure causes.
 
@@ -190,13 +187,13 @@ Volume semantics are **not resolved** (`volume_context_status: not_run_no_valida
 ## 10. Root Cause Assessment
 
 ### Primary: Outlier-Driven Leverage
-Day 84's high Pearson IC is driven by **258 extreme target observations** (2.11%) that are correctly predicted in sign and roughly in magnitude. These observations:
-- Have |target| > 3σ (cross-day σ = 0.000651)
+Day 84's high Pearson IC is driven by **258 extreme target observations** (2.1075%) that are correctly predicted in sign and roughly in magnitude. These observations:
+- Have |target| > 3σ (W3 target $\sigma = 0.000651086564$, threshold $= 0.001953259576$)
 - Contribute disproportionately to the Pearson correlation (max leverage = 0.0013, highest among all days)
 - Create a positive Pearson-Spearman gap (+0.077), indicating the correlation is value-sensitive, not just rank-sensitive
 
-### Secondary: Regime Alignment
-Day 84 is classified as **momentum/persistent** (high confidence), which aligns with the model's feature set (momentum/volatility features). The model's predictions are more accurate in trending regimes, and Day 84's intraday segments show consistently positive IC (0.14-0.28), suggesting the regime persists throughout the day.
+### Secondary: Regime Alignment (Unproven / Disqualified)
+Earlier hypotheses suggested that Day 84's performance was explained by "momentum/persistent regime alignment." Under the authoritative Part 3 regime table, Day 84 is classified as **random-walk / inconclusive with low confidence** due to ADF conflict ($p = 0.0141$). Therefore, regime alignment cannot be asserted as an independent validation of the ML result.
 
 ### Tertiary: Distributional Uniqueness
 Day 84 is the **only validation day with positive R²** (0.047), meaning it's the only day where predictions explain more variance than the mean. Its target distribution (IQR = 0.0009) is wider than Days 80-82 (IQR = 0.0003) but narrower than Day 85 (IQR = 0.0010), placing it in a "sweet spot" where variance is high enough for signal detection but not so high as to overwhelm the model.
@@ -209,7 +206,7 @@ Day 84 is the **only validation day with positive R²** (0.047), meaning it's th
 
 2. **Day 84 inflates reported performance by ~6×.** The model's "true" cross-validation performance is closer to Pearson IC = 0.011 (or mean daily IC = 0.046) than the reported 0.071.
 
-3. **The model is regime-dependent.** Performance is concentrated in momentum/persistent regimes (Days 80-82, 84) and degrades in random-walk regimes (Days 83, 85). This is expected for a momentum-focused feature set but represents a structural limitation.
+3. **Regime dependence is nuanced.** Performance is not simply explained by persistent regimes; Day 84 itself exhibits statistical conflict (ADF mean-reversion signal alongside persistent ACF/Hurst/VR).
 
 4. **Extreme events dominate the IC.** With 2.11% of observations driving 51.5% of the IC, the metric is sensitive to the frequency and alignment of extreme targets, which may not recur in live trading.
 
