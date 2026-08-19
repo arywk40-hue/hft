@@ -1,0 +1,2 @@
+window,strategy,trades,gross_pnl,transaction_costs,net_pnl,sharpe,sortino,maximum_drawdown,turnover,win_rate,average_trade_return,median_trade_return,trade_return_std,daily_pnl_std,average_exposure,maximum_exposure,validation_days,validation_rows
+W3,primary_sign_strategy,246,0.0014348715600488449,0.2460000000000001,-0.24456512843995126,-169.22509705426938,-15.816621077217235,-0.2147551523046639,492.0,0.06097560975609756,-0.0009941671887802896,-0.0009834275527701433,0.0006518087360406752,0.003823655713449959,0.5270148678178157,1.0,6,73452

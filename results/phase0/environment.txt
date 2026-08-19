@@ -1,0 +1,16 @@
+EBX PHASE 0 ENVIRONMENT AUDIT
+generated_at_utc=2026-08-17T20:09:39.970754+00:00
+python=3.13.0
+python_implementation=CPython
+platform=macOS-26.5.2-arm64-arm-64bit-Mach-O
+
+package_versions:
+pandas=NOT_INSTALLED
+numpy=NOT_INSTALLED
+scipy=NOT_INSTALLED
+statsmodels=NOT_INSTALLED
+scikit-learn=NOT_INSTALLED
+pyarrow=NOT_INSTALLED
+pytest=NOT_INSTALLED
+
+test_baseline=pytest is not installed; stdlib unittest baseline is used

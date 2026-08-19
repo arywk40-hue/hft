@@ -60,6 +60,8 @@ data/validated/
 # results/README.md. The directory-level README remains reviewable.
 results/*
 !results/README.md
+!results/freeze/
+!results/freeze/development_freeze.json
 
 # Generated figures are kept locally and are indexed by
 # figures/README.md. The directory-level README remains reviewable.
@@ -106,3 +108,107 @@ dist/
 # =========================
 config/local.yaml
 config/local.yml
+
+# =========================
+# Final submission evidence allowlist
+# =========================
+# Raw CSV, Parquet partitions, model caches, and temporary generated files
+# remain ignored. The following exceptions version-control only the
+# documented tables, manifests, reports, model-comparison outputs, trade log,
+# and figures required to review the final submission.
+!results/phase0/
+!results/phase0/*.csv
+!results/phase0/*.txt
+!results/quality/
+!results/quality/*.csv
+!results/quality/*.txt
+!results/diagnostics/
+!results/diagnostics/*.csv
+!results/diagnostics/*.txt
+!results/missingness/
+!results/missingness/*.csv
+!results/missingness/*.txt
+!results/distributions/
+!results/distributions/*.csv
+!results/distributions/*.txt
+!results/regimes/
+!results/regimes/*.csv
+!results/regimes/*.json
+!results/features/
+!results/features/*.csv
+!results/features/*.json
+!results/predictive/
+!results/predictive/*.csv
+!results/predictive/*.json
+!results/redundancy/
+!results/redundancy/*.csv
+!results/redundancy/*.json
+!results/ml/
+!results/ml/datasets/
+!results/ml/datasets/*.json
+!results/ml/day84_forensics/
+!results/ml/day84_forensics/*.json
+!results/ml/features/
+!results/ml/features/*.csv
+!results/ml/preprocessing/
+!results/ml/preprocessing/*.json
+!results/ml/splits/
+!results/ml/splits/*.json
+!results/ml/targets/
+!results/ml/targets/*.csv
+!results/ml/targets/*.json
+!results/ml/validation/
+!results/ml/validation/*.json
+!results/ml/baseline/
+!results/ml/baseline/*.csv
+!results/ml/baseline/*.json
+!results/ml/train_only_selection/
+!results/ml/train_only_selection/*.csv
+!results/ml/train_only_selection/*.json
+!results/ml/temporal_robustness/
+!results/ml/temporal_robustness/*.csv
+!results/ml/temporal_robustness/*.json
+!results/ml/temporal_robustness/W1/
+!results/ml/temporal_robustness/W1/*.csv
+!results/ml/temporal_robustness/W1/*.json
+!results/ml/temporal_robustness/W2/
+!results/ml/temporal_robustness/W2/*.csv
+!results/ml/temporal_robustness/W2/*.json
+!results/ml/temporal_robustness/W3/
+!results/ml/temporal_robustness/W3/*.csv
+!results/ml/temporal_robustness/W3/*.json
+!results/ml/backtest_baseline/
+!results/ml/backtest_baseline/*.csv
+!results/ml/backtest_baseline/*.json
+!results/ml/elastic_net/
+!results/ml/elastic_net/*.csv
+!results/ml/elastic_net/*.json
+!results/ml/elastic_net/W1/
+!results/ml/elastic_net/W1/*.csv
+!results/ml/elastic_net/W1/*.json
+!results/ml/elastic_net/W2/
+!results/ml/elastic_net/W2/*.csv
+!results/ml/elastic_net/W2/*.json
+!results/ml/elastic_net/W3/
+!results/ml/elastic_net/W3/*.csv
+!results/ml/elastic_net/W3/*.json
+!results/ml/lightgbm/
+!results/ml/lightgbm/*.csv
+!results/ml/lightgbm/*.json
+!results/ml/lightgbm/*.txt
+!figures/part1/
+!figures/part1/*.png
+!figures/part2/
+!figures/part2/*.png
+!figures/part4/
+!figures/part4/*.png
+!figures/ml_phase4/
+!figures/ml_phase4/*.png
+
+# Explicitly omitted duplicate/intermediate exports
+results/features/daily_best_candidates.csv
+results/ml/train_only_selection/selection_daily_ic.csv
+results/ml/temporal_robustness/W1/selection_daily_ic.csv
+results/ml/temporal_robustness/W2/selection_daily_ic.csv
+results/ml/temporal_robustness/W3/selection_daily_ic.csv
+results/ml/elastic_net/primary/

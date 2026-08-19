@@ -1,0 +1,41 @@
+{
+  "daily_metrics_by_window": {
+    "W1": {
+      "mean_daily_pearson_ic": 0.060763428094790205,
+      "median_daily_pearson_ic": 0.063962545371204,
+      "negative_validation_days": 3,
+      "positive_validation_day_fraction": 0.7,
+      "positive_validation_days": 7
+    },
+    "W2": {
+      "mean_daily_pearson_ic": 0.04222923537887753,
+      "median_daily_pearson_ic": 0.053564149316638394,
+      "negative_validation_days": 4,
+      "positive_validation_day_fraction": 0.6,
+      "positive_validation_days": 6
+    },
+    "W3": {
+      "mean_daily_pearson_ic": 0.07453603386290876,
+      "median_daily_pearson_ic": 0.0795849358920025,
+      "negative_validation_days": 2,
+      "positive_validation_day_fraction": 0.6666666666666666,
+      "positive_validation_days": 4
+    }
+  },
+  "feature_count_coefficient_of_variation": 0.008686574980566925,
+  "feature_count_mean": 195.66666666666666,
+  "feature_count_std_population": 1.699673171197595,
+  "maximum_window_pearson_ic": 0.07071228928810865,
+  "mean_window_pearson_ic": 0.047127823214113594,
+  "median_window_pearson_ic": 0.03891226756075555,
+  "minimum_window_pearson_ic": 0.03175891279347658,
+  "negative_window_count": 0,
+  "positive_window_count": 3,
+  "std_window_pearson_ic": 0.020735546800198106,
+  "window_order": [
+    "W1",
+    "W2",
+    "W3"
+  ],
+  "window_pearson_ic_range": 0.03895337649463206
+}

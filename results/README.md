@@ -8,7 +8,8 @@ repository organization.
 
 - Development: expected 85 days; 70 available (Days 1–64 and 80–85).
 - Missing development days: Days 65–79, represented explicitly in scoped tables.
-- Holdout: Days 86–108, validated separately after the development freeze.
+- Holdout: Days 86–108 are reserved. Historical holdout artifacts may remain
+  locally for provenance but are not part of the current development package.
 - Days 109–123: out of scope.
 
 ## Main result groups
@@ -25,6 +26,6 @@ repository organization.
 | `missingness/` | Structural missingness, warm-up, and window ladder |
 | `freeze/` | Frozen development conclusions |
 | `ml/` | Model-ready pipeline, Ridge experiments, temporal diagnostics, and the isolated Part 5 baseline backtest |
-| `holdout/` | Separate Days 86–108 validation artifacts |
+| `holdout/` | Historical Days 86–108 artifacts; not used for current development |
 
 The authoritative mapping is [reports/artifact_index.md](../reports/artifact_index.md).

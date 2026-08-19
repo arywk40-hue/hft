@@ -1,0 +1,5 @@
+# Generated analytical CSVs retain their original byte representation. Git's
+# whitespace checker otherwise treats their CRLF record terminators as trailing
+# whitespace even though the artifacts are unchanged and machine-readable.
+*.csv -diff
+*.png binary

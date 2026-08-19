@@ -1,0 +1,17 @@
+{
+  "deterministic_fit": true,
+  "deterministic_selection": true,
+  "holdout_days_loaded": [],
+  "input_sha256": {
+    "config.yaml": "2562097334755551b45d2492cbe3bcff98df26fc0ddfbc30cdb968c675b5f94b",
+    "development_freeze.json": "916be8b0c6d9bff52570ca1759b84e78eb782ad20140a569a6c1b7df5aa737fe",
+    "per_day_ic.csv": "af901f7a819b5ae6c9ff9c77c4959e2b6020fb6ff850e24c59378d21f14008f4",
+    "split_manifest.json": "404afbc45cd38678ca3d8c20fdf87952bc4c3abd956f8ea8a993a7838852c34c"
+  },
+  "random_seed": null,
+  "window_order": [
+    "W1",
+    "W2",
+    "W3"
+  ]
+}

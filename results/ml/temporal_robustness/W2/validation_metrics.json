@@ -1,0 +1,21 @@
+{
+  "day": "pooled",
+  "directional_accuracy": 0.48011390490594574,
+  "mae": 0.0004450741809388544,
+  "mean_daily_pearson_ic": 0.04222923537887753,
+  "mean_daily_spearman_ic": 0.050138534950917926,
+  "median_daily_pearson_ic": 0.053564149316638394,
+  "median_daily_spearman_ic": 0.036138308846519765,
+  "pearson_ic": 0.03175891279347658,
+  "prediction_mean": 1.1733602699269665e-05,
+  "prediction_std": 0.00012743050700246355,
+  "r2": -0.028369195528173297,
+  "rmse": 0.0006437751229542538,
+  "spearman_ic": -0.0010580636878999591,
+  "std_daily_pearson_ic": 0.11974543175414781,
+  "std_daily_spearman_ic": 0.10622974001655755,
+  "target_mean": -6.520117638199312e-06,
+  "target_std": 0.0006348369942954607,
+  "validation_days": 10,
+  "validation_observations": 84632
+}

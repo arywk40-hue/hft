@@ -275,13 +275,13 @@ The daily IC distribution across top features is **fat-tailed**: a few exception
 
 ### 10.3 Lead/Lag Analysis
 
-Feature-target lag correlations decay smoothly from lag-0 to lag-60 with no suspicious jumps. **No leakage flags** were raised. The correlation at lag-0 is modestly higher than lag-1, but the difference is small (< 2× ratio) and consistent with genuine contemporaneous association rather than temporal misalignment.
+Feature-target lag correlations decay smoothly from lag-0 to lag-60 with no suspicious jumps. No downstream leakage flag was raised in this diagnostic. This does not certify causal provenance of the supplied masked PB/VB/BB/PV/V columns. The correlation at lag-0 is modestly higher than lag-1, but the difference is small (< 2× ratio) and consistent with genuine contemporaneous association rather than temporal misalignment.
 
 ---
 
 ## 11. Potential Leakage Flags
 
-**No leakage was detected.**
+No confirmed leakage was found in this downstream diagnostic. Causal provenance of the supplied PB/VB/BB/PV/V features could not be independently certified because the original feature-generation source is unavailable.
 
 The lead/lag analysis across 15 sampled features (3 per family) showed smooth correlation decay with increasing lag. No feature exhibited:
 - Suspicious lag-0 spikes
@@ -372,7 +372,7 @@ The feature warm-up structure (leading NaN) prevents backward-filling contaminat
 ### 13.2 Temporal Leakage in Features
 **Tested**: Whether any feature shows suspiciously high lag-0 correlation relative to lag-1.
 **Result**: All sampled features show smooth, gradual correlation decay across lags.
-**Conclusion**: **Rejected.** No leakage detected.
+**Conclusion**: **Rejected for the tested downstream diagnostic.** This does not certify upstream feature causality; the original feature-generation source is unavailable.
 
 ### 13.3 Extreme Events as Predictable Precursors
 **Tested**: Whether extreme 1s returns have systematic precursor patterns.
@@ -417,7 +417,7 @@ The feature warm-up structure (leading NaN) prevents backward-filling contaminat
 2. **Intraday volatility U-shape**: 60% higher volatility at open vs mid-session (all days).
 3. **Missingness is purely structural**: Deterministic warm-up pattern, no regime dependence (all days).
 4. **BB split-personality**: Two structurally distinct subpopulations within the BB family (all days).
-5. **No temporal leakage detected**: Smooth lag-correlation decay across all sampled features.
+5. **No confirmed downstream temporal leakage**: Smooth lag-correlation decay across all sampled features; upstream feature causality remains uncertified.
 
 ### B. INTERESTING BUT UNPROVEN HYPOTHESES
 

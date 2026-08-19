@@ -9,7 +9,8 @@ numbers in [`docs/implementation.md`](../docs/implementation.md):
 - `phase4_part1.py` through `phase7_part4a.py`: Parts 1–4A
 - `phase8_part4b.py` through `phase10_part4d.py`: Part 4B–4D
 - `phase11_integrated_review.py` through `phase13_holdout_validation.py`:
-  integration, freeze, and holdout validation
+  integration, freeze, and historical holdout validation; do not rerun during
+  current packaging
 
 ## `ml/` — ML pipeline phases
 
@@ -18,6 +19,8 @@ numbers in [`docs/implementation.md`](../docs/implementation.md):
 - `phase_ml2_train_only_selection.py`: training-only feature selection
 - `phase_ml3_temporal_robustness.py`: temporal robustness experiment
 - `phase_ml4_backtest.py`: one fixed-rule Part 5 development baseline backtest
+- `phase_ml5_elastic_net.py`: fixed Elastic Net comparison
+- `phase_ml9_lightgbm.py`: fixed LightGBM W3 comparison
 
 The ML and Part 5 outputs are frozen development artifacts. The backtest is not
 a production strategy, and no additional model, optimization, or holdout run is

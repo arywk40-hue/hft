@@ -1,0 +1,16 @@
+{
+  "deterministic": true,
+  "holdout_days_loaded": [],
+  "random_state": null,
+  "stable_output_sha256": {
+    "backtest/daily_pnl.csv": "75230227387cff0a2b15e2619159ba9761322cd4c4effd22f301d35219544c30",
+    "backtest/trade_log.csv": "adb09ce8a1cd8ef0c5dfe067f92658fe6c984ecee75de9d3092ae56f71ff03b1",
+    "backtest/window_metrics.csv": "169549df48379f44a70c6e56528be55d943f787283410bf58e28b7dfe8d534c4",
+    "backtest_summary.json": "aa174336381b833752afdf561812cae6fc29907c4ad4dda95b0a62bb117eb00f",
+    "daily_comparison.csv": "b1a1351321dcae641c5e143c266b5c68d01068b7686b00a0d8b69434e7ddd69c",
+    "predictive_comparison.csv": "6c018c00b87edf8eba638673352e2ee87183d597783e88fb54fd38eaf87ba542",
+    "primary/daily_metrics.csv": "393c57ae8459ec7479b4e9ec72c1ea05db92f64506986a815e9d119dd96e1353",
+    "primary/elastic_net_model.pkl": "3b9b4101c969a843afdbfa460c907a27a961aab5d812acb0dc3680a4f3bce68e",
+    "primary/validation_metrics.json": "f6c5544d8f6de65c02676f7e995a09e4cc0ebdbbd755228dafd07f564afe30ec"
+  }
+}

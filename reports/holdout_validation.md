@@ -1,5 +1,10 @@
 # Phase 13 — Untouched Holdout Validation
 
+> Historical Phase 13 record retained for provenance. It is not part of the
+> current Phase 11 development package, is not used for new analysis, and must
+> not be rerun during packaging. The current README and final report reserve
+> Days 86–108 and make no new holdout-generalization claim.
+
 ## A. Holdout Coverage
 
 - Expected holdout days: 23

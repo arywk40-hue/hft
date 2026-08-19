@@ -1,0 +1,25 @@
+{
+  "deterministic": true,
+  "holdout_days_loaded": [],
+  "random_seed": 20260819,
+  "stable_output_sha256": {
+    "cost_breakdown.csv": "5e45fd6780ae3fdd343fe5e69b43b6e2b588644f7d427c779b625ce23af297e9",
+    "daily_metrics.csv": "d066b5bd9d078c00f6dd78cb374102755c6578ed97a843d2f500f77161737ebd",
+    "daily_pnl.csv": "681d3568abf6c39eecbaf37f0c04aa538b9d6ce0d0458249866c0fd181c16ef5",
+    "day84_sensitivity.json": "da72d098154ce81d36885e148b17045cadc0c65435b44738aec8dabc519e13d9",
+    "economic_comparison.csv": "b9756a63f50e5fc474b4dd4f3fa1e0d7eeffe3007511313266e346e826ccb23a",
+    "equity_curve.csv": "a3e26f4abb6b7ab93e11a60513d07ee9deec89ec18d20e905c107ce79558d6d6",
+    "lightgbm_model.txt": "a744a799c7828d52e3901506a4a7ac50e710dafc0a84f38121aff658b61946d0",
+    "model_config.json": "90a2d42a1701009794bdb24a4a5ad98987280d17d1a0c70a8c5adf5d9778926c",
+    "predictions/day80.parquet": "bc82eab8709033916ee9098407571d0dfd86f67a56d729ba44aba008435f57d0",
+    "predictions/day81.parquet": "b23e0a882d96f51055650b45ceeee6d69868b77d3309de5ada0b12791e8fabbe",
+    "predictions/day82.parquet": "d57b73b7be189c3720cdf1fdc2f0a45bf080dfb9af21913c191ce6e77d342626",
+    "predictions/day83.parquet": "33fbe3b85764326e7fe0c5d618252de8eba6aed69d0c98189bdb6448165d681a",
+    "predictions/day84.parquet": "53d7d00c814b518652785d6ae48a3997254d08b50f01e5e3401bfa1637ab7921",
+    "predictions/day85.parquet": "c10aada6ac9886230b4ebaf87d27894f641ca6f060435789c9e95439e11c5756",
+    "predictive_comparison.csv": "7784d69f2c6377369d3f00e2f79394a7346819753190f674f434bd9a2697ef7b",
+    "trade_log.csv": "84811414dbc90b3d4f360e6cc7efb2db1ddd7bb57f21ddb280fbf7322734e570",
+    "validation_metrics.json": "3685316958dee48f7b8ad0fbcf1e7794cadf0c1b967ba54058e1cea51939d306",
+    "window_metrics.csv": "13fe480e0ad11c456a28dbf54eecf0f78bb79bcde420152bf8e9217ad5fdf40e"
+  }
+}

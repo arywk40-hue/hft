@@ -14,7 +14,7 @@ The repository represents an **exceptional, research-grade, highly rigorous quan
 
 ### Key Strengths:
 1. **Methodological Honesty & Scientific Integrity**: The project strictly resists "p-hacking" and false optimism. When Part 5 baseline strategy backtests show negative returns under realistic transaction costs (10 bps round-trip), the reports document this failure clearly rather than tuning parameters or searching for profitable curves.
-2. **Defensive Pipeline & Leakage Architecture**: Downstream feature standardization, target forward returns, day-boundary isolation, and structural NaN warm-up handling are fully verified by 109 automated unit/integration tests with zero detected downstream leakage.
+2. **Defensive Pipeline & Leakage Architecture**: Downstream feature standardization, target forward returns, day-boundary isolation, and structural NaN warm-up handling are verified by the audited unit/integration tests. No confirmed leakage was found in the audited downstream ML/target/preprocessing pipeline, but causal provenance of the supplied PB/VB/BB/PV/V features could not be independently certified because the original feature-generation source is unavailable.
 3. **Traceability & Provenance**: Every number in `final_report.md` maps deterministically to frozen or generated artifacts catalogued in `artifact_index.md` and `results/README.md`.
 4. **Holdout Protection**: Strict separation of development data (70 available days) from holdout data (23 days) is cryptographically and architecturally enforced.
 
