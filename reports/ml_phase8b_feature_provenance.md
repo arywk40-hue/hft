@@ -1,0 +1,178 @@
+# ML Phase 8B — Feature Provenance / Causality Resolution
+
+## Final verdict
+
+**C. Feature-generation source unavailable; causality cannot be certified.**
+
+The repository contains enough code to establish that its downstream ingestion,
+target construction, missingness handling, and preprocessing do not introduce
+future information. It does not contain the original implementation that
+created the raw PB/VB/BB/PV/V feature columns. The feature-generation
+causality standard therefore cannot be met.
+
+This is an unresolved provenance limitation, not a confirmed leakage finding.
+No formula has been fabricated and no existing analytical conclusion has been
+changed.
+
+## Search performed
+
+The following repository areas were searched:
+
+- `src/`
+- `scripts/`
+- `docs/`
+- `config/`
+- `tests/`
+- `notebooks/`
+- local Git history for those paths, including deleted and renamed paths and
+  string searches for representative feature names
+
+No external repository was accessed. No destructive Git operation was used.
+No data file, holdout file, or holdout-derived artifact was opened for this
+provenance search.
+
+## What the repository actually contains
+
+### Raw feature origin and ingestion
+
+[`docs/quant.md`](../docs/quant.md#L17) describes the columns as masked
+price-, volume-, and additional feature types and explicitly says their exact
+construction is not provided by the challenge.
+
+[`src/ingestion/loader.py`](../src/ingestion/loader.py#L45) reads each source
+CSV without sorting, imputation, or cross-day concatenation. It does not
+calculate PB/VB/BB/PV/V values.
+
+[`scripts/analysis/phase2_process.py`](../scripts/analysis/phase2_process.py#L99)
+validates each available day and writes the loaded table to processed Parquet.
+The feature columns are passed through; no rolling, lag, lead, resampling,
+normalization, interpolation, forward fill, or backward fill is applied to
+them.
+
+[`src/ebx/ml/dataset_builder.py`](../src/ebx/ml/dataset_builder.py#L118)
+reads selected feature columns from those processed tables. Its additional
+operations are target construction, validity masking, and train-only
+standardization; it is not a feature generator.
+
+### Taxonomy and nominal windows
+
+[`src/common/features.py`](../src/common/features.py) parses a feature name
+into family, subfamily, suffix, and nominal window. The nominal ladders are
+configuration hypotheses used for missingness reporting; they are not source
+formula definitions.
+
+The production-facing `src/ebx/features/` modules are compatibility exports
+for parsing, masks, missingness, and window constants. They contain no feature
+calculation implementation.
+
+### Forensic candidate formulas
+
+[`src/analytics/candidates.py`](../src/analytics/candidates.py#L24) contains
+hand-built price and return candidate formulas used for forensic hypothesis
+testing. Those formulas use trailing rolling windows, past shifts, and causal
+EWMA settings. They are explicitly candidate hypotheses, not recovered source
+implementations. The listed `VOLUME_CANDIDATES` names do not have a raw
+volume-feature implementation in that module.
+
+[`scripts/analysis/phase8_part4b.py`](../scripts/analysis/phase8_part4b.py#L71)
+applies those candidates to one processed day at a time for comparison against
+the masked columns. A successful match is evidence for a hypothesis, not proof
+of how the original feature was generated.
+
+## Provenance table
+
+Nominal windows below come only from the repository's configured ladder. They
+must not be interpreted as recovered formula windows.
+
+| Family | Example | Source found? | Formula/source | Nominal window | Causal evidence | Confidence |
+|---|---|---|---|---:|---|---|
+| PB | `PB1_T1` | No | Raw masked CSV column; no producer code | 15 s | None for original value generation | Uncertified |
+| PB | `PB1_T2` | No | Raw masked CSV column; no producer code | 30 s | None for original value generation | Uncertified |
+| PB | `PB18_T12` | No | Raw masked CSV column; taxonomy/parser only | 10,800 s | None for original value generation | Uncertified |
+| VB | `VB3_T7` | No | Raw masked CSV column; no producer code | 300 s | None for original value generation | Uncertified |
+| VB | `VB3_T8` | No | Raw masked CSV column; no producer code | 600 s | None for original value generation | Uncertified |
+| BB | `BB12_T4` | No | Raw masked CSV column; no producer code | 60 s | None for original value generation | Uncertified |
+| PV | `PV1_T2` | No | Raw masked CSV column; no producer code | 10 s | None for original value generation | Uncertified |
+| V | `V5_T10` | No | Raw masked CSV column; no producer code | 1,500 s | None for original value generation | Uncertified |
+
+Fixed-indicator/varying-window relationships are represented by the parser's
+`subfamily` field, for example `PB1_T1` and `PB1_T2` both map to subfamily
+`PB1`. This establishes naming taxonomy only; it does not establish that the
+two values were generated by the same causal indicator implementation.
+
+## Git-history findings
+
+Local history was inspected without checking out or modifying historical
+states:
+
+- `c1ab5e3` added `src/analytics/candidates.py` and the Part 4 forensic scripts;
+  these are hand-built reverse-engineering candidates, not the original
+  feature generator.
+- `18a042e` added production compatibility modules for parser, windows, masks,
+  and missingness; these are not feature-generation code.
+- `5db65bb` added shared taxonomy/window parsing utilities.
+- No deleted feature-generation script was found.
+- No renamed feature-generation module was found.
+- No notebook containing feature formulas was found.
+- No commit introducing the original PB/VB/BB/PV/V calculations was found.
+
+The history therefore supports the conclusion that this repository began with
+already-generated masked feature columns and later added analysis and
+validation around them.
+
+## Causality assessment by operation
+
+Because the original producer is absent, the following required source-level
+questions remain unanswered for every family:
+
+- whether the current row is included;
+- exact rolling/window alignment;
+- whether any lead or future shift was used;
+- whether group/day boundaries were enforced during generation;
+- whether forward fill, backward fill, or interpolation was applied;
+- whether normalization used future or full-day statistics;
+- whether resampling introduced look-ahead.
+
+The downstream code answers different questions successfully:
+
+- target construction is exact and within-day;
+- training preprocessing is fit only on training rows;
+- structural warm-up NaNs are preserved;
+- the processed dataset does not alter source feature values;
+- forensic candidates are causal and day-local when called according to their
+  per-day contract.
+
+Those downstream findings cannot certify the already-materialized feature
+values at timestamp `t`.
+
+## Artifact and holdout protection
+
+No files under the protected analytical namespaces were modified:
+
+- `results/ml/baseline/`
+- `results/ml/elastic_net/`
+- `results/ml/train_only_selection/`
+- `results/ml/temporal_robustness/`
+- `results/ml/backtest_baseline/`
+- `results/predictive/`
+- `results/freeze/`
+
+No model results were regenerated. Days 86–108 were not loaded, inspected,
+hashed, profiled, or used. The existing ML manifests continue to record:
+
+```text
+holdout_days_loaded: []
+```
+
+Days 65–79 remain explicit missing development days.
+
+## Consequence
+
+The original feature-generation causality cannot be certified from the
+available repository evidence. The existing Parts 1–4 and ML results remain
+descriptions of the supplied feature columns under the documented downstream
+pipeline; they should not be upgraded to a source-level no-look-ahead claim.
+
+The appropriate next evidence would be the original feature-generation source,
+an authoritative generator specification, or a provenance record proving the
+timestamp availability rules. None is present locally.

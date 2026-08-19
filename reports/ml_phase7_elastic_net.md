@@ -227,8 +227,9 @@ rejection, fixed phase scope, supplied-training row counts, and prediction
 alignment. The solver was additionally checked against scikit-learn on a
 synthetic fixture to floating-point precision.
 
-The complete test suite and `git diff --check` are run after this report is
-created; their final results are recorded in the handoff response.
+Final verification: `pytest -q` passed **71 tests** with 2 pre-existing SciPy
+precision-loss warnings in the training-only-selection tests. `git diff
+--check` passed.
 
 ## Limitations and interpretation
 

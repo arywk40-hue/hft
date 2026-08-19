@@ -220,4 +220,5 @@ Day 84 is the **only validation day with positive R²** (0.047), meaning it's th
 ## Artifacts
 
 - `results/ml/day84_forensics/day84_forensics.json` — Full numerical results for all analysis sections
+- Reproducer: [`scripts/analysis/day84_forensics.py`](../scripts/analysis/day84_forensics.py)
 - This report: `reports/ml_day84_forensics.md`
