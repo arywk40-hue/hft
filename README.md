@@ -1,19 +1,27 @@
 # EBX Quantitative Analysis
 
-This repository answers the EBX Quant Data Challenge through Parts 1–4:
-data hygiene, distribution and tail analysis, regime classification, and
-masked-feature forensics. It also contains the frozen development conclusions
-and the separate Days 86–108 holdout validation.
+This repository answers the EBX Quant Data Challenge through Parts 1–4,
+the audited ML development experiments, and one pre-specified Part 5 baseline
+backtest. It also contains the frozen development conclusions and the
+separate Days 86–108 holdout validation artifacts.
 
 ## Reviewer summary
 
 - Development specification: **85 days**.
 - Development data available: **70 days** — Days 1–64 and 80–85.
 - Missing development data: **Days 65–79** — explicitly represented and never fabricated.
-- Holdout: **Days 86–108**, 23/23 days validated after the development freeze.
+- Holdout: **Days 86–108**, 23/23 days validated separately after the
+  development freeze; no holdout data was accessed during this finalization.
 - Days 109–123: out of scope.
 - Final generalization verdict: **MOSTLY ROBUST**.
-- ML modeling, Part 5, backtesting, and new analysis: intentionally not included.
+- Parts 1–4 and their development conclusions are frozen.
+- ML development includes the Phase 0 pipeline, Ridge baseline,
+  training-only selection, temporal robustness, and Day-84 forensics.
+- Part 5 contains one fixed-rule development backtest. Its net result is
+  negative after the documented costs; no economic viability or production
+  strategy claim is made.
+- No new model, optimization, final production model, or additional strategy
+  is included.
 
 The complete written synthesis is [reports/final_report.md](reports/final_report.md).
 The repository-level traceability audit is [reports/repository_audit.md](reports/repository_audit.md).
@@ -43,8 +51,10 @@ reports/ (reviewable conclusions and traceability)
 | Part 1 — Data Hygiene & Descriptive Statistics | `src/ebx/io/`, `src/ebx/validation/`, `src/ebx/common/`, `src/ebx/diagnostics/`; `scripts/analysis/phase2_process.py`, `scripts/analysis/phase4_part1.py` | `results/quality/`, `results/diagnostics/`, `results/missingness/` | `figures/part1/` | [Final report §3](reports/final_report.md#3-data-hygiene) |
 | Part 2 — Distribution & Tails | `src/ebx/distribution/`; `scripts/analysis/phase5_part2.py` | `results/distributions/` | `figures/part2/` | [Final report §4](reports/final_report.md#4-distribution-and-tails) |
 | Part 3 — Regime Classification | `src/ebx/regimes/`; `scripts/analysis/phase6_part3.py` | `results/regimes/` | No dedicated Part 3 figure currently exists | [Final report §5](reports/final_report.md#5-regime-classification) |
-| Part 4 — Feature Forensics | `src/ebx/features/`, `src/ebx/forensics/`; `scripts/analysis/phase7_part4a.py`, `scripts/analysis/phase8_part4b.py`, `scripts/analysis/phase9_part4c.py`, `scripts/analysis/phase10_part4d.py` | `results/features/`, `results/predictive/`, `results/redundancy/` | No dedicated Part 4 figure set currently exists | [Final report §§6–8](reports/final_report.md#6-feature-forensics) |
-| Holdout — Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`; `scripts/analysis/phase13_holdout_validation.py` | `results/holdout/` | Holdout figures not generated | [Holdout report](reports/holdout_validation.md), [Final report §9](reports/final_report.md#9-out-of-sample-validation) |
+| Part 4 — Feature Forensics | `src/ebx/features/`, `src/ebx/forensics/`; `scripts/analysis/phase7_part4a.py`, `scripts/analysis/phase8_part4b.py`, `scripts/analysis/phase9_part4c.py`, `scripts/analysis/phase10_part4d.py` | `results/features/`, `results/predictive/`, `results/redundancy/` | `figures/part4/` | [Final report §§6–8](reports/final_report.md#6-feature-forensics) |
+| ML Phases 0–3 — Model-ready pipeline and controlled Ridge experiments | `src/ebx/ml/`; `scripts/ml/phase_ml0.py` through `phase_ml3_temporal_robustness.py` | `results/ml/` | — | [ML reports](reports/ml_phase0.md) |
+| Part 5 — Baseline development backtest | `src/ebx/ml/backtest.py`; `scripts/ml/phase_ml4_backtest.py` | `results/ml/backtest_baseline/` | `figures/ml_phase4/` | [Backtest report](reports/ml_phase4_backtest.md), [audit](reports/ml_phase5_audit.md) |
+| Holdout — Days 86–108 | `src/ebx/validation/`, `src/ebx/cli.py`; `scripts/analysis/phase13_holdout_validation.py` | `results/holdout/` | Holdout figures not generated | [Holdout report](reports/holdout_validation.md), [Final report §10](reports/final_report.md#10-out-of-sample-validation) |
 
 The generated directories are intentionally not committed as bulk data. Their
 contents, scope, and review status are catalogued in [results/README.md](results/README.md)
@@ -60,7 +70,6 @@ python -m pip install -e ".[dev]"
 python -m ebx.cli inventory
 python -m ebx.cli validate
 python -m ebx.cli analyze
-python -m ebx.cli holdout
 python scripts/run_pipeline.py
 pytest
 ```
@@ -69,19 +78,29 @@ The CLI is a non-mutating verifier by default. It does not silently rerun
 analysis or overwrite frozen outputs. Historical phase scripts remain under
 `scripts/` for provenance; run them only with their declared scope and freeze
 safeguards.
+The existing holdout validation is frozen and must not be rerun for tuning or
+new analysis.
 
 ## ML Phase 0 and first baseline
 
-The model-ready pipeline and first Ridge baseline are implemented. Run
-`python scripts/phase_ml0.py` to consume only the 70 available development
+The model-ready pipeline and first Ridge baseline are implemented. The
+reproducible entry point is
+`python scripts/ml/phase_ml0.py` to consume only the 70 available development
 Parquet days, profile 1s/5s/30s/60s/300s targets, consume the frozen Part 4
 predictive screen, assign a chronological train/validation split, fit
 train-only standardization, and write day-wise model-ready Parquet partitions.
+These ML and Part 5 outputs are frozen; do not rerun them to tune or improve a
+result.
 
-Run `python scripts/phase_ml1_baseline.py` for the fixed-alpha Ridge baseline.
-See [reports/ml_phase3_baseline.md](reports/ml_phase3_baseline.md) for its
-validation results. No tree model, neural network, strategy, or backtest has
-been implemented.
+Run `python scripts/ml/phase_ml1_baseline.py` for the fixed-alpha Ridge
+baseline. The controlled training-only selection and temporal-robustness
+experiments are in `phase_ml2_train_only_selection.py` and
+`phase_ml3_temporal_robustness.py`. See the ML reports for their validation
+results. The single Part 5 development backtest is isolated under
+`results/ml/backtest_baseline/` and documented in
+[reports/ml_phase4_backtest.md](reports/ml_phase4_backtest.md). No tree model,
+neural network, hyperparameter search, final production model, or second
+strategy is included.
 
 Outputs are under `results/ml/`: target profiles and recommendation, frozen
 feature set, split manifest, preprocessing manifest, dataset manifest, leakage
@@ -101,7 +120,7 @@ hft/
 ├── src/{analytics,cleaning,common,ingestion}/  # audited compatibility layer
 ├── scripts/
 │   ├── analysis/           # phase runners (Parts 1–4, holdout)
-│   ├── ml/                 # ML phase runners (Phase 0–3)
+│   ├── ml/                 # ML phase runners (Phase 0–4 / Part 5 baseline)
 │   ├── plot_part4.py       # Part 4 visualization suite
 │   └── run_pipeline.py     # safe production verifier
 ├── tests/                  # phase, unit, and integration tests
@@ -118,8 +137,9 @@ Raw CSVs are read-only and excluded from version control. Processed Parquet,
 generated tables, and figures remain local generated artifacts. Structural NaNs
 are preserved, no silent imputation is used, and rolling/lagged operations are
 day-local. Days 65–79 remain missing; no new data was introduced for this
-organization pass. No ML model, trading strategy, Part 5 backtest, or further
-statistical analysis is authorized by the frozen repository state.
+finalization pass. The development ML and Part 5 baseline artifacts are frozen.
+No further model, strategy, optimization, or backtest is authorized by the
+frozen repository state, and holdout data is not to be used for new work.
 
 See [reports/reproducibility.md](reports/reproducibility.md) for provenance and
 [reports/artifact_index.md](reports/artifact_index.md) for detailed artifact

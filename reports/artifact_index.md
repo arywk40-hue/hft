@@ -17,6 +17,9 @@ generated artifact.
 | Frozen formula hypotheses | `results/features/candidate_best_matches.csv`, `results/features/candidate_scores.csv` |
 | Development predictive screen | `results/predictive/aggregate_ic.csv`, `results/predictive/per_day_ic.csv` |
 | Development PCA/redundancy | `results/redundancy/pca_summary.csv`, `results/redundancy/redundancy_summary.json` |
+| ML Phase 0 model-ready pipeline | `results/ml/targets/`, `results/ml/datasets/`, `results/ml/validation/` |
+| Ridge baseline and controlled ML experiments | `results/ml/baseline/`, `results/ml/train_only_selection/`, `results/ml/temporal_robustness/`, `results/ml/day84_forensics/` |
+| Part 5 baseline development backtest | `results/ml/backtest_baseline/`, `figures/ml_phase4/`, `reports/ml_phase4_backtest.md` |
 | Integrated development interpretation | `reports/phase11_integrated_review.md` |
 | Holdout integrity | `results/holdout/integrity.csv`, `results/holdout/schema.csv`, `results/holdout/missingness.csv` |
 | Window generalization | `results/holdout/window_generalization.csv` |

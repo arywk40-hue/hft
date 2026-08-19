@@ -100,7 +100,100 @@ holdout was 0.1227/0.1414. The pooled first-component variance changed from
 0.2468 to 0.2021. The broad low-dimensional and redundant structure therefore
 generalized, with some magnitude variation.
 
-## 9. Out-of-Sample Validation
+## 9. ML Development and Part 5
+
+### 9.1 Part 4 figure completion
+
+The Part 4 visualization suite is complete under `figures/part4/` and is
+generated from frozen results only. It includes feature-IC distributions,
+family summaries, top/bottom features, the eligibility funnel, and the
+per-family redundancy heatmap. No figure changes the underlying conclusions.
+
+### 9.2 Feature semantics and missingness
+
+The feature taxonomy treats PB, VB, BB, PV, and V as distinct families. For a
+fixed indicator/type `i`, changing the suffix `j` in `PB{i}_T{j}` denotes a
+window variant within that subfamily; it is not treated as a new semantic
+identity. Early rolling-window NaNs are structural warm-up values. They are
+preserved and classified upstream, while the ML dataset builder applies
+complete-case filtering downstream without imputation. Feature formulas remain
+hypotheses unless independently supported by evidence.
+
+### 9.3 ML Phase 0 and Ridge baseline
+
+The model-ready pipeline consumed the 70 available development days only
+(Days 1–64 and 80–85), retaining Days 65–79 as explicit missing days. It used
+the frozen 197-feature screen, exact within-day 300-second future returns, and
+training-only preprocessing with no imputation or clipping. The deterministic
+Ridge baseline used `alpha=1.0`, trained on 745,700 rows from Days 1–64, and
+validated on 73,452 rows from Days 80–85. Its pooled Pearson IC was 0.071416,
+Spearman IC 0.060726, directional accuracy 0.508781, and R² -0.023186.
+These are predictive-association results, not evidence of economic utility.
+
+### 9.4 Training-only feature selection
+
+The controlled selection experiment refit the existing screen on training days
+only across 691 candidate features and 3,455 feature-horizon hypotheses. It
+selected 198 300-second features, retaining all 197 frozen features plus one
+additional feature. Experiment B produced Pearson IC 0.070712, Spearman IC
+0.055737, directional accuracy 0.507651, and R² -0.023414 on the same six-day
+validation period. The small decrease versus the frozen-screen baseline was
+reported without tuning or validation-driven compensation.
+
+### 9.5 Temporal robustness
+
+The three pre-specified chronological windows produced Pearson IC values of
+0.038912 (W1, validation Days 45–54), 0.031759 (W2, Days 55–64), and 0.070712
+(W3, Days 80–85). Pooled R² was negative in all three windows. Training-only
+selected feature counts were 195, 194, and 198, with pairwise Jaccard overlap
+above 0.979. This supports some temporal association but not stable economic
+performance.
+
+### 9.6 Day-84 forensic analysis
+
+Day 84 is retained in the primary W3 result. Removing it is a post-hoc
+sensitivity diagnostic only: W3 Pearson IC falls from 0.070712 to 0.011037,
+and Day 84 accounts for approximately 51.5% of pooled W3 IC while representing
+16.7% of observations. The forensic report attributes this influence to
+outlier-driven leverage and regime alignment; no feature, target, threshold, or
+model was changed.
+
+### 9.7 Part 5 baseline strategy
+
+Part 5 tests one pre-specified economic-utility implementation of the existing
+Ridge signal. Prediction sign determines long/short/flat direction, exposure is
+fixed at unit notional, one position is held at a time, entry uses the first raw
+observation at or after the signal, and exit uses the exact same-day timestamp
+300 seconds after entry. The documented cost assumption is 5 bps at entry plus
+5 bps at exit, with zero fee; it is not an empirically measured spread model.
+
+| Window | Trades | Gross P&L | Costs | Net P&L | Sharpe |
+|---|---:|---:|---:|---:|---:|
+| W1 | 410 | 0.008677675 | 0.410000 | -0.401322325 | -186.162764 |
+| W2 | 285 | 0.014409138 | 0.285000 | -0.270590862 | -32.994427 |
+| W3 | 246 | 0.021281444 | 0.246000 | -0.224718556 | -106.280913 |
+| Pooled development | 941 | 0.044368257 | 0.941000 | -0.896631743 | -52.575858 |
+
+The pooled result is descriptive because validation days are reused across the
+three temporal experiments. The positive gross P&L did not survive the
+documented transaction-cost assumption. W3 including Day 84 remains the
+primary result; excluding Day 84 is reported only as a sensitivity, with net
+P&L -0.197612194.
+
+### 9.8 Part 5 audit and development conclusion
+
+The independent audit reconciled every trade's cost, gross P&L, net P&L,
+timestamp alignment, 300-second holding period, day-local execution, and
+position overlap. Stable research-bearing outputs were reproducible; only the
+timestamped run manifest changes on rerun. The audit found no audited
+look-ahead, and manifests record `holdout_days_loaded: []`.
+
+The development evidence therefore distinguishes modest predictive association
+from economic utility. The development baseline does not demonstrate economic
+viability after costs, profitability, alpha, or production readiness. No final
+production model, strategy optimization, or additional backtest is included.
+
+## 10. Out-of-Sample Validation
 
 All 23/23 holdout days passed integrity validation. Window medians, PCA/
 redundancy structure, regime proportions, normality rejection, and most frozen
@@ -109,14 +202,14 @@ mixed, and exact tail magnitudes were not stable.
 
 The final verdict is **MOSTLY ROBUST**.
 
-## 10. Limitations
+## 11. Limitations
 
 - Development coverage is 70 days, not the specified 85; Days 65–79 remain missing.
 - The dataset is masked and feature semantics are inferred hypotheses, not confirmed identities.
 - Exact tail-index estimates are unstable across development and holdout.
 - Some feature hypotheses did not generalize or lacked sufficient holdout evidence.
-- No trained ML model was built.
-- No trading strategy, Part 5, or backtest was performed.
+- The ML experiments and Part 5 are development-only baselines, not production
+  models or trading recommendations.
 - Statistical persistence is not proof of economic value, causal effect, or deployability.
 
 ## Reproducibility

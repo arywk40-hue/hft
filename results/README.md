@@ -24,6 +24,7 @@ repository organization.
 | `redundancy/` | Pairwise redundancy and PCA summaries |
 | `missingness/` | Structural missingness, warm-up, and window ladder |
 | `freeze/` | Frozen development conclusions |
+| `ml/` | Model-ready pipeline, Ridge experiments, temporal diagnostics, and the isolated Part 5 baseline backtest |
 | `holdout/` | Separate Days 86–108 validation artifacts |
 
 The authoritative mapping is [reports/artifact_index.md](../reports/artifact_index.md).

@@ -17,6 +17,11 @@ numbers in [`docs/implementation.md`](../docs/implementation.md):
 - `phase_ml1_baseline.py`: fixed-alpha Ridge baseline
 - `phase_ml2_train_only_selection.py`: training-only feature selection
 - `phase_ml3_temporal_robustness.py`: temporal robustness experiment
+- `phase_ml4_backtest.py`: one fixed-rule Part 5 development baseline backtest
+
+The ML and Part 5 outputs are frozen development artifacts. The backtest is not
+a production strategy, and no additional model, optimization, or holdout run is
+part of the frozen state.
 
 ## Root scripts
 
