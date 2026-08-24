@@ -35,9 +35,11 @@ The frozen 28-day test was run once the configuration had been written and
 hashed. The prototype produced gross P&L of 0.01842, transaction costs of
 0.31960, and net P&L of **-0.30117** across 1,718 trades. Its 36.38% hit rate,
 large turnover (3,195.98), and negative median trade return (-0.000144) do not
-support an economic claim. Measured preprocessing-plus-model batch-size-one
-latency was p50 733,167 ns, p95 1,417,136 ns, and p99 3,059,153 ns on the
-recorded local environment. These are measured artifacts, not projections.
+support an economic claim. Measured batch-size-one p50 latency was 44,583 ns
+for model-only inference, 408,167 ns for preprocessing plus model inference,
+and 5,584,146 ns for a complete bounded causal feature update. Each benchmark
+used 1,000 warm-ups and 10,000 timed iterations. Feature computation dominates
+the end-to-end timing. These are measured artifacts, not projections.
 
 ## Remaining work before submission
 
