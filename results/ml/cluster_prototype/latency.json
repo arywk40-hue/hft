@@ -1,15 +1,47 @@
-{
-  "warmup_iterations": 1000,
-  "timed_iterations": 10000,
-  "p50_ns": 701750.0,
-  "p95_ns": 1028012.4999999998,
-  "p99_ns": 1465815.0000000014,
-  "mean_ns": 760164.7574,
-  "std_ns": 292977.51000012294,
-  "python": "3.13.0",
-  "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
-  "numpy": "2.5.2",
-  "cpu": "arm",
-  "model": "LogisticRegression",
-  "measurement": "preprocessing_plus_model_batch_1"
-}
+[
+  {
+    "warmup_iterations": 1000,
+    "timed_iterations": 10000,
+    "p50_ns": 44583.0,
+    "p95_ns": 56752.09999999997,
+    "p99_ns": 153057.67000000036,
+    "mean_ns": 53639.7934,
+    "std_ns": 268501.62940998835,
+    "python": "3.13.0",
+    "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.2",
+    "cpu": "arm",
+    "model": "LogisticRegression",
+    "measurement": "model_only_batch_1"
+  },
+  {
+    "warmup_iterations": 1000,
+    "timed_iterations": 10000,
+    "p50_ns": 408167.0,
+    "p95_ns": 648127.0499999999,
+    "p99_ns": 1508330.8300000017,
+    "mean_ns": 480569.2237,
+    "std_ns": 797091.6565983201,
+    "python": "3.13.0",
+    "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.2",
+    "cpu": "arm",
+    "model": "LogisticRegression",
+    "measurement": "preprocessing_plus_model_batch_1"
+  },
+  {
+    "warmup_iterations": 1000,
+    "timed_iterations": 10000,
+    "p50_ns": 5584145.5,
+    "p95_ns": 7424904.149999998,
+    "p99_ns": 11022700.510000011,
+    "mean_ns": 5903682.5939,
+    "std_ns": 1951775.6371518306,
+    "python": "3.13.0",
+    "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.5.2",
+    "cpu": "arm",
+    "model": "causal_feature_update",
+    "measurement": "complete_causal_feature_update_batch_1"
+  }
+]

@@ -101,9 +101,18 @@ def main() -> None:
     pd.DataFrame({"feature":feature_cols,"coefficient":np.abs(model.coef_).max(axis=0)}).sort_values("coefficient",ascending=False).to_csv(out/"selected_features.csv",index=False)
     config={"phase":10,"model":"balanced multinomial logistic regression","source_features":SOURCE_FEATURES,"entry_threshold":threshold,"safety_buffer":.00005,"target_volatility":.0005,"max_hold_seconds":300,"cost_bps_per_side":1,"train_days":sorted(map(int,train.day.unique())),"validation_days":sorted(validation_days),"test_days":list(FINAL_TEST),"day_normalization":norm,"frozen_before_test":True}
     encoded=json.dumps(config,sort_keys=True,indent=2)+"\n"; (out/"strategy_config.json").write_text(encoded); (out/"strategy_config.sha256").write_text(hashlib.sha256(encoded.encode()).hexdigest()+"\n")
-    latency=benchmark(lambda:model.predict_proba(scaler.transform(valid.iloc[[0]][feature_cols])))
-    latency.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"preprocessing_plus_model_batch_1"})
-    pd.DataFrame([latency]).to_csv(out/"latency.csv",index=False); (out/"latency.json").write_text(json.dumps(latency,indent=2)+"\n")
+    raw_one=valid.iloc[[0]][feature_cols]
+    scaled_one=scaler.transform(raw_one)
+    model_only=benchmark(lambda:model.predict_proba(scaled_one))
+    model_only.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"model_only_batch_1"})
+    preprocess_model=benchmark(lambda:model.predict_proba(scaler.transform(raw_one)))
+    preprocess_model.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"preprocessing_plus_model_batch_1"})
+    # Recompute one bounded causal window to include signal-side feature updates.
+    latency_frame=frames[DEVELOPMENT[-1]].iloc[:601].copy()
+    complete=benchmark(lambda: causal_features(latency_frame,day=DEVELOPMENT[-1],feature_columns=[c for c in SOURCE_FEATURES if c in latency_frame]).iloc[[-1]])
+    complete.update({"cpu":platform.processor(),"model":"causal_feature_update","measurement":"complete_causal_feature_update_batch_1"})
+    latency_rows=[model_only,preprocess_model,complete]
+    pd.DataFrame(latency_rows).to_csv(out/"latency.csv",index=False); (out/"latency.json").write_text(json.dumps(latency_rows,indent=2)+"\n")
     test_metrics={"status":"not_run","reason":"run --run-test only after config review"}
     if args.run_test:
         test_frames={d:load_day(data/f"day{d}.csv") for d in FINAL_TEST}
