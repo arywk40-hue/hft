@@ -1,0 +1,14 @@
+{
+  "strategy": "cluster_prototype",
+  "gross_pnl": 0.018424473378568083,
+  "transaction_cost": 0.31959762114874357,
+  "net_pnl": -0.30117314777017545,
+  "trade_count": 1718,
+  "hit_rate": 0.3637951105937136,
+  "average_trade_return": -0.00017530450976145255,
+  "median_trade_return": -0.00014377160716173962,
+  "turnover": 3195.976211487435,
+  "average_exposure": 0.9301444154503595,
+  "maximum_exposure": 1.0,
+  "max_drawdown": -0.3026569723966439
+}

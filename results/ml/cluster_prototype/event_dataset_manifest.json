@@ -1,0 +1,11 @@
+{
+  "positive_count": 75,
+  "negative_count": 216,
+  "source_features": [
+    "PB1_T1",
+    "VB1_T1",
+    "V1_T1",
+    "PV1_T1"
+  ],
+  "causality": "rolling windows stop at timestamp; future prices occur only in oracle labels"
+}

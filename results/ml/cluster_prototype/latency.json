@@ -1,0 +1,15 @@
+{
+  "warmup_iterations": 1000,
+  "timed_iterations": 10000,
+  "p50_ns": 701750.0,
+  "p95_ns": 1028012.4999999998,
+  "p99_ns": 1465815.0000000014,
+  "mean_ns": 760164.7574,
+  "std_ns": 292977.51000012294,
+  "python": "3.13.0",
+  "os": "macOS-26.5.2-arm64-arm-64bit-Mach-O",
+  "numpy": "2.5.2",
+  "cpu": "arm",
+  "model": "LogisticRegression",
+  "measurement": "preprocessing_plus_model_batch_1"
+}
