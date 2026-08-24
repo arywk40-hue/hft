@@ -15,7 +15,7 @@ from src.ebx.ml.day_clustering import day_features, deterministic_pam, represent
 from src.ebx.ml.event_features import causal_features, event_dataset
 from src.ebx.ml.latency import benchmark
 from src.ebx.ml.oracle_trades import extract_oracle_trades
-from src.ebx.ml.prototype_strategy import simulate_confidence_strategy
+from src.ebx.ml.prototype_strategy import simulate_confidence_strategy, simulate_simple_baseline
 
 AVAILABLE = tuple(range(1, 65)) + tuple(range(80, 86))
 DEVELOPMENT, FINAL_TEST = AVAILABLE[:42], AVAILABLE[42:]
@@ -101,9 +101,18 @@ def main() -> None:
     pd.DataFrame({"feature":feature_cols,"coefficient":np.abs(model.coef_).max(axis=0)}).sort_values("coefficient",ascending=False).to_csv(out/"selected_features.csv",index=False)
     config={"phase":10,"model":"balanced multinomial logistic regression","source_features":SOURCE_FEATURES,"entry_threshold":threshold,"safety_buffer":.00005,"target_volatility":.0005,"max_hold_seconds":300,"cost_bps_per_side":1,"train_days":sorted(map(int,train.day.unique())),"validation_days":sorted(validation_days),"test_days":list(FINAL_TEST),"day_normalization":norm,"frozen_before_test":True}
     encoded=json.dumps(config,sort_keys=True,indent=2)+"\n"; (out/"strategy_config.json").write_text(encoded); (out/"strategy_config.sha256").write_text(hashlib.sha256(encoded.encode()).hexdigest()+"\n")
-    latency=benchmark(lambda:model.predict_proba(scaler.transform(valid.iloc[[0]][feature_cols])))
-    latency.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"preprocessing_plus_model_batch_1"})
-    pd.DataFrame([latency]).to_csv(out/"latency.csv",index=False); (out/"latency.json").write_text(json.dumps(latency,indent=2)+"\n")
+    raw_one=valid.iloc[[0]][feature_cols]
+    scaled_one=scaler.transform(raw_one)
+    model_only=benchmark(lambda:model.predict_proba(scaled_one))
+    model_only.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"model_only_batch_1"})
+    preprocess_model=benchmark(lambda:model.predict_proba(scaler.transform(raw_one)))
+    preprocess_model.update({"cpu":platform.processor(),"model":"LogisticRegression","measurement":"preprocessing_plus_model_batch_1"})
+    # Recompute one bounded causal window to include signal-side feature updates.
+    latency_frame=frames[DEVELOPMENT[-1]].iloc[:601].copy()
+    complete=benchmark(lambda: causal_features(latency_frame,day=DEVELOPMENT[-1],feature_columns=[c for c in SOURCE_FEATURES if c in latency_frame]).iloc[[-1]])
+    complete.update({"cpu":platform.processor(),"model":"causal_feature_update","measurement":"complete_causal_feature_update_batch_1"})
+    latency_rows=[model_only,preprocess_model,complete]
+    pd.DataFrame(latency_rows).to_csv(out/"latency.csv",index=False); (out/"latency.json").write_text(json.dumps(latency_rows,indent=2)+"\n")
     test_metrics={"status":"not_run","reason":"run --run-test only after config review"}
     if args.run_test:
         test_frames={d:load_day(data/f"day{d}.csv") for d in FINAL_TEST}
@@ -114,6 +123,12 @@ def main() -> None:
         trade_log=pd.concat(trades,ignore_index=True); trade_log.to_csv(out/"trade_log.csv",index=False)
         trade_log.groupby("day").net_return.sum().rename("net_pnl").reset_index().to_csv(out/"daily_pnl.csv",index=False)
         test_metrics=summarize(trade_log,"cluster_prototype")
+        comparison_rows=[test_metrics]
+        for name in ("flat","random","passive"):
+            logs=pd.concat([simulate_simple_baseline(frame,day=day,mode=name) for day,frame in test_frames.items()],ignore_index=True)
+            comparison_rows.append(summarize(logs,name))
+        comparison_rows.append({"strategy":"ridge_sign_1bp","status":"unavailable","reason":"frozen Ridge final-test predictions are not present; no substitute model was used"})
+        pd.DataFrame(comparison_rows).to_csv(out/"baseline_comparisons.csv",index=False)
         cost_rows=[]
         for bps in (0,1,2,5):
             adjusted=trade_log.copy(); adjusted["transaction_cost"]=2*bps/10000*adjusted.position_size
@@ -123,5 +138,5 @@ def main() -> None:
         if args.render_figures:
             figures(out,table,representatives,oracle,trade_log)
     (out/"test_metrics.json").write_text(json.dumps(test_metrics,indent=2)+"\n")
-    (out/"run_manifest.json").write_text(json.dumps({"status":"complete" if args.run_test else "development_complete_final_test_not_run","test_executed":args.run_test,"holdout_days_loaded":[],"figures_rendered":args.render_figures},indent=2)+"\n")
+    (out/"run_manifest.json").write_text(json.dumps({"status":"partial_real_data_execution" if args.run_test else "development_complete_final_test_not_run","test_executed":args.run_test,"holdout_days_loaded":[],"figures_rendered":args.render_figures,"known_gaps":["required comparator backtests","complete figure suite","model-only and complete causal-pipeline latency"]},indent=2)+"\n")
 if __name__=="__main__": main()

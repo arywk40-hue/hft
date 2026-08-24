@@ -1,6 +1,11 @@
 {
-  "status": "complete",
+  "status": "partial_real_data_execution",
   "test_executed": true,
   "holdout_days_loaded": [],
-  "figures_rendered": false
+  "figures_rendered": false,
+  "known_gaps": [
+    "required comparator backtests",
+    "complete figure suite",
+    "model-only and complete causal-pipeline latency"
+  ]
 }
