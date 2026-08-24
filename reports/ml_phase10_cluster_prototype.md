@@ -41,6 +41,13 @@ and 5,584,146 ns for a complete bounded causal feature update. Each benchmark
 used 1,000 warm-ups and 10,000 timed iterations. Feature computation dominates
 the end-to-end timing. These are measured artifacts, not projections.
 
+On the same final days and 1 bp-per-side costs, deterministic random direction
+lost -0.39567 net, the FLAT comparator returned 0, and passive buy-and-hold
+returned +0.05426 net. The prototype's loss was smaller than random's but was
+still negative and trailed passive exposure. The requested frozen Ridge-sign
+comparison is recorded as unavailable: no final-test Ridge prediction artifact
+exists, and no substitute model was used.
+
 ## Remaining work before submission
 
 The runner now creates the split, day table, clusters, representatives, oracle
