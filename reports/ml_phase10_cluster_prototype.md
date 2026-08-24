@@ -50,3 +50,12 @@ cluster/regime diagnostics, and the complete requested figure suite. The local
 matplotlib runtime also aborted during figure rendering because its font cache
 was not writable; this needs environment remediation before chart QA. These
 gaps mean this is not ready for pull-request submission.
+
+## Verification
+
+Focused Phase 10 tests passed (4 passed). The repository unit suite passed
+(78 passed, 1 skipped because the optional LightGBM dependency is unavailable).
+The integration subset had 3 passing tests and one unrelated failure:
+results/holdout/freeze_manifest.json is absent, so its frozen-artifact test
+cannot read the expected historical manifest. This extension did not create or
+alter holdout artifacts, and no replacement was fabricated.
