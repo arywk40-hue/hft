@@ -123,5 +123,5 @@ def main() -> None:
         if args.render_figures:
             figures(out,table,representatives,oracle,trade_log)
     (out/"test_metrics.json").write_text(json.dumps(test_metrics,indent=2)+"\n")
-    (out/"run_manifest.json").write_text(json.dumps({"status":"complete" if args.run_test else "development_complete_final_test_not_run","test_executed":args.run_test,"holdout_days_loaded":[],"figures_rendered":args.render_figures},indent=2)+"\n")
+    (out/"run_manifest.json").write_text(json.dumps({"status":"partial_real_data_execution" if args.run_test else "development_complete_final_test_not_run","test_executed":args.run_test,"holdout_days_loaded":[],"figures_rendered":args.render_figures,"known_gaps":["required comparator backtests","complete figure suite","model-only and complete causal-pipeline latency"]},indent=2)+"\n")
 if __name__=="__main__": main()
