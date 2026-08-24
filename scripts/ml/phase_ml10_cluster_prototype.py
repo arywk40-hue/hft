@@ -15,7 +15,7 @@ from src.ebx.ml.day_clustering import day_features, deterministic_pam, represent
 from src.ebx.ml.event_features import causal_features, event_dataset
 from src.ebx.ml.latency import benchmark
 from src.ebx.ml.oracle_trades import extract_oracle_trades
-from src.ebx.ml.prototype_strategy import simulate_confidence_strategy
+from src.ebx.ml.prototype_strategy import simulate_confidence_strategy, simulate_simple_baseline
 
 AVAILABLE = tuple(range(1, 65)) + tuple(range(80, 86))
 DEVELOPMENT, FINAL_TEST = AVAILABLE[:42], AVAILABLE[42:]
@@ -123,6 +123,12 @@ def main() -> None:
         trade_log=pd.concat(trades,ignore_index=True); trade_log.to_csv(out/"trade_log.csv",index=False)
         trade_log.groupby("day").net_return.sum().rename("net_pnl").reset_index().to_csv(out/"daily_pnl.csv",index=False)
         test_metrics=summarize(trade_log,"cluster_prototype")
+        comparison_rows=[test_metrics]
+        for name in ("flat","random","passive"):
+            logs=pd.concat([simulate_simple_baseline(frame,day=day,mode=name) for day,frame in test_frames.items()],ignore_index=True)
+            comparison_rows.append(summarize(logs,name))
+        comparison_rows.append({"strategy":"ridge_sign_1bp","status":"unavailable","reason":"frozen Ridge final-test predictions are not present; no substitute model was used"})
+        pd.DataFrame(comparison_rows).to_csv(out/"baseline_comparisons.csv",index=False)
         cost_rows=[]
         for bps in (0,1,2,5):
             adjusted=trade_log.copy(); adjusted["transaction_cost"]=2*bps/10000*adjusted.position_size

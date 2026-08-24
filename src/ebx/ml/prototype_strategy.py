@@ -32,3 +32,20 @@ def simulate_confidence_strategy(features: pd.DataFrame, probabilities: np.ndarr
         rows.append({"day":int(item.day),"entry_timestamp_seconds":ts,"exit_timestamp_seconds":exit_ts,"direction":direction,"position_size":size,"gross_return":gross*size,"transaction_cost":cost,"net_return":gross*size-cost})
         next_allowed=exit_ts
     return pd.DataFrame(rows)
+
+
+def simulate_simple_baseline(prices: pd.DataFrame, *, day: int, mode: str, seed: int = 20260824) -> pd.DataFrame:
+    """Causal passive/random/flat comparators with the same 1bp-per-side costs."""
+    if mode == "flat": return pd.DataFrame(columns=["day","gross_return","transaction_cost","net_return","position_size"])
+    p = dict(zip(prices.timestamp_seconds.astype(int), prices.Price.astype(float)))
+    times = sorted(p); rows=[]; rng=np.random.default_rng(seed + day)
+    if mode == "passive":
+        if len(times)<2: return pd.DataFrame()
+        gross=p[times[-1]]/p[times[0]]-1; return pd.DataFrame([{"day":day,"gross_return":gross,"transaction_cost":.0002,"net_return":gross-.0002,"position_size":1.}])
+    if mode != "random": raise ValueError("mode must be flat, random, or passive")
+    for entry in times[::300]:
+        exit_time=entry+300
+        if exit_time not in p: continue
+        direction=int(rng.choice([-1,1])); gross=direction*(p[exit_time]/p[entry]-1)
+        rows.append({"day":day,"gross_return":gross,"transaction_cost":.0002,"net_return":gross-.0002,"position_size":1.})
+    return pd.DataFrame(rows)
