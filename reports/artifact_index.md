@@ -32,3 +32,8 @@ generated artifact.
 
 No table combines development and holdout observations for an out-of-sample
 claim.
+# Phase 10 (in-progress extension)
+
+`results/ml/cluster_prototype/` is reserved for the isolated cluster-conditioned
+prototype strategy. Its split manifest must record the 42/28 chronological
+development/test boundary; no Phase 10 artifact may load locked Days 86–108.

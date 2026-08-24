@@ -27,6 +27,9 @@ data and are not part of this development package.
   downstream leakage checks do not certify upstream feature causality.
 
 The complete written synthesis is [reports/final_report.md](reports/final_report.md).
+The organiser-requested Phase 10 extension is tracked separately in
+[reports/ml_phase10_cluster_prototype.md](reports/ml_phase10_cluster_prototype.md);
+it is explicitly in-progress and does not alter frozen conclusions.
 The final packaging and traceability audit is
 [reports/final_submission_audit.md](reports/final_submission_audit.md).
 The earlier organization record is retained as historical evidence in

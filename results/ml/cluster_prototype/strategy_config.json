@@ -1,0 +1,120 @@
+{
+  "cost_bps_per_side": 1,
+  "day_normalization": {
+    "intraday_range": {
+      "mean": 0.009628497796460866,
+      "std": 0.005682624844242733
+    },
+    "lag1_autocorrelation": {
+      "mean": -0.01913763658310705,
+      "std": 0.02147401104144706
+    },
+    "max_drawdown": {
+      "mean": -0.007235931503756169,
+      "std": 0.0044993739467721755
+    },
+    "open_to_close_return": {
+      "mean": 0.0010814042149102933,
+      "std": 0.006826731472007234
+    },
+    "realized_vol_1s": {
+      "mean": 4.2567726492821035e-05,
+      "std": 2.3515314958284325e-05
+    },
+    "realized_vol_5s": {
+      "mean": 4.484546229732567e-05,
+      "std": 2.5123959618355762e-05
+    },
+    "return_kurtosis": {
+      "mean": 26.600824605358646,
+      "std": 42.787082502232685
+    },
+    "return_skew": {
+      "mean": -0.3908586918131717,
+      "std": 0.8435746855786332
+    },
+    "three_sigma_frequency": {
+      "mean": 0.014800487228611828,
+      "std": 0.0031167962484349118
+    },
+    "trend_r2": {
+      "mean": 0.42473430791559447,
+      "std": 0.27446114481888945
+    },
+    "trend_slope": {
+      "mean": 8.682115302729936e-09,
+      "std": 3.193078230703049e-07
+    }
+  },
+  "entry_threshold": 0.75,
+  "frozen_before_test": true,
+  "max_hold_seconds": 300,
+  "model": "balanced multinomial logistic regression",
+  "phase": 10,
+  "safety_buffer": 5e-05,
+  "source_features": [
+    "PB1_T1",
+    "VB1_T1",
+    "V1_T1",
+    "PV1_T1"
+  ],
+  "target_volatility": 0.0005,
+  "test_days": [
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85
+  ],
+  "train_days": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    12,
+    13,
+    17,
+    30
+  ],
+  "validation_days": [
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42
+  ]
+}
